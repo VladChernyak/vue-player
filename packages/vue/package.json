@@ -1,0 +1,23 @@
+{
+  "name": "@vue-player/vue",
+  "version": "0.0.1",
+  "description": "Vue 3 video player component library",
+  "keywords": [
+    "vue",
+    "vue3",
+    "video",
+    "player",
+    "hls",
+    "dash",
+    "composable"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VladChernyak/vue-player",
+    "directory": "packages/vue"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@vue-player/core",
+  "version": "0.0.1",
+  "description": "Core logic for vue-player — framework-agnostic video player engine",
+  "keywords": [
+    "vue",
+    "video",
+    "player",
+    "hls",
+    "dash"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VladChernyak/vue-player",
+    "directory": "packages/core"
+  }
+}

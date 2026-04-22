@@ -1,0 +1,22 @@
+{
+  "name": "@vue-player/nuxt",
+  "version": "0.0.1",
+  "description": "Nuxt 4 module for vue-player",
+  "keywords": [
+    "nuxt",
+    "nuxt4",
+    "vue",
+    "video",
+    "player",
+    "module"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VladChernyak/vue-player",
+    "directory": "packages/nuxt"
+  }
+}

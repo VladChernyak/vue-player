@@ -1,0 +1,9 @@
+Architecture.md
+.DS_Store
+
+node_modules
+dist
+.nuxt
+.output
+.cache
+*.local

@@ -1,0 +1,17 @@
+{
+  "name": "vue-player",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r --filter='./packages/*' build",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^3.0.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.8.0",
+    "unbuild": "^3.0.0",
+    "vue": "^3.5.0"
+  }
+}

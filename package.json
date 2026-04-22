@@ -4,14 +4,20 @@
   "type": "module",
   "scripts": {
     "build": "pnpm -r --filter='./packages/*' build",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "unrs-resolver"]
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.0.0",
     "eslint": "^9.0.0",
     "typescript": "^5.8.0",
     "unbuild": "^3.0.0",
+    "vitest": "^3.0.0",
     "vue": "^3.5.0"
   }
 }

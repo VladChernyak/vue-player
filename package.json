@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "pnpm -r --filter='./packages/*' build",
+    "playground": "pnpm --filter @vue-player/playground-vue dev",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",

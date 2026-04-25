@@ -1,7 +1,7 @@
 export function isFullscreenSupported(): boolean {
   return !!(
-    document.fullscreenEnabled
-    || (document as Document & { webkitFullscreenEnabled?: boolean }).webkitFullscreenEnabled
+    document.fullscreenEnabled ||
+    (document as Document & { webkitFullscreenEnabled?: boolean }).webkitFullscreenEnabled
   )
 }
 
@@ -12,8 +12,7 @@ export function isPiPSupported(): boolean {
 export async function enterFullscreen(el: HTMLElement): Promise<void> {
   if (el.requestFullscreen) {
     await el.requestFullscreen()
-  }
-  else {
+  } else {
     const webkit = el as HTMLElement & { webkitRequestFullscreen?: () => Promise<void> }
     await webkit.webkitRequestFullscreen?.()
   }
@@ -22,8 +21,7 @@ export async function enterFullscreen(el: HTMLElement): Promise<void> {
 export async function exitFullscreen(): Promise<void> {
   if (document.exitFullscreen) {
     await document.exitFullscreen()
-  }
-  else {
+  } else {
     const webkit = document as Document & { webkitExitFullscreen?: () => Promise<void> }
     await webkit.webkitExitFullscreen?.()
   }
@@ -31,8 +29,8 @@ export async function exitFullscreen(): Promise<void> {
 
 export function getFullscreenElement(): Element | null {
   return (
-    document.fullscreenElement
-    || (document as Document & { webkitFullscreenElement?: Element }).webkitFullscreenElement
-    || null
+    document.fullscreenElement ||
+    (document as Document & { webkitFullscreenElement?: Element }).webkitFullscreenElement ||
+    null
   )
 }

@@ -1,4 +1,12 @@
-export type { PlayerState, PlayerError, PlayerOptions, VideoSource, Quality, Track, Chapter } from './types'
+export type {
+  PlayerState,
+  PlayerError,
+  PlayerOptions,
+  VideoSource,
+  Quality,
+  Track,
+  Chapter,
+} from './types'
 
 export { detectSourceType } from './utils/source'
 export type { SourceType } from './utils/source'

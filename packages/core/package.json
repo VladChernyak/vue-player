@@ -2,7 +2,13 @@
   "name": "@vue-player/core",
   "version": "0.0.1",
   "description": "Core logic for vue-player — framework-agnostic video player engine",
-  "keywords": ["vue", "video", "player", "hls", "dash"],
+  "keywords": [
+    "vue",
+    "video",
+    "player",
+    "hls",
+    "dash"
+  ],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -16,7 +22,9 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub"
@@ -26,8 +34,12 @@
     "shaka-player": ">=4.0.0"
   },
   "peerDependenciesMeta": {
-    "hls.js": { "optional": true },
-    "shaka-player": { "optional": true }
+    "hls.js": {
+      "optional": true
+    },
+    "shaka-player": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "access": "public"

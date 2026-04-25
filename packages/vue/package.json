@@ -2,10 +2,20 @@
   "name": "@vue-player/vue",
   "version": "0.0.1",
   "description": "Vue 3 video player component library",
-  "keywords": ["vue", "vue3", "video", "player", "hls", "dash", "composable"],
+  "keywords": [
+    "vue",
+    "vue3",
+    "video",
+    "player",
+    "hls",
+    "dash",
+    "composable"
+  ],
   "license": "MIT",
   "type": "module",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
@@ -17,7 +27,9 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub"
@@ -33,7 +45,9 @@
     "vue": ">=3.3.0"
   },
   "peerDependenciesMeta": {
-    "hls.js": { "optional": true }
+    "hls.js": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "access": "public"

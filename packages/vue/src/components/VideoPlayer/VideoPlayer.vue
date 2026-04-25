@@ -57,16 +57,41 @@ onMounted(() => {
   if (props.src) loadSource(props.src)
 })
 
-watch(() => props.src, (src) => {
-  if (src) loadSource(src)
-})
+watch(
+  () => props.src,
+  (src) => {
+    if (src) loadSource(src)
+  },
+)
 
-watch(() => state.isPlaying, v => v ? emit('play') : emit('pause'))
-watch(() => state.isEnded, v => { if (v) emit('ended') })
-watch(() => state.currentTime, v => emit('timeUpdate', v))
-watch(() => state.isBuffering, v => emit('buffering', v))
-watch(() => state.isFullscreen, v => emit('fullscreenChange', v))
-watch(() => state.error, v => { if (v) emit('error', v) })
+watch(
+  () => state.isPlaying,
+  (v) => (v ? emit('play') : emit('pause')),
+)
+watch(
+  () => state.isEnded,
+  (v) => {
+    if (v) emit('ended')
+  },
+)
+watch(
+  () => state.currentTime,
+  (v) => emit('timeUpdate', v),
+)
+watch(
+  () => state.isBuffering,
+  (v) => emit('buffering', v),
+)
+watch(
+  () => state.isFullscreen,
+  (v) => emit('fullscreenChange', v),
+)
+watch(
+  () => state.error,
+  (v) => {
+    if (v) emit('error', v)
+  },
+)
 
 // ─── Controls visibility ───
 const controlsVisible = ref(true)
@@ -92,16 +117,17 @@ let flashTimer: ReturnType<typeof setTimeout> | null = null
 function triggerFlash(icon: 'play' | 'pause') {
   if (flashTimer) clearTimeout(flashTimer)
   flashIcon.value = icon
-  flashKey.value++                                          // remount → restart CSS animation
-  flashTimer = setTimeout(() => { flashIcon.value = null }, 700)
+  flashKey.value++ // remount → restart CSS animation
+  flashTimer = setTimeout(() => {
+    flashIcon.value = null
+  }, 700)
 }
 
 function togglePlay() {
   if (state.isPlaying) {
     controls.pause()
     triggerFlash('pause')
-  }
-  else {
+  } else {
     controls.play()
     triggerFlash('play')
   }
@@ -112,12 +138,30 @@ function onKeydown(e: KeyboardEvent) {
   if (!props.keyboard) return
   showControls()
   const map: Record<string, () => void> = {
-    Space: () => { e.preventDefault(); togglePlay() },
-    KeyK: () => { e.preventDefault(); togglePlay() },
-    ArrowLeft: () => { e.preventDefault(); controls.seek(state.currentTime - 5) },
-    ArrowRight: () => { e.preventDefault(); controls.seek(state.currentTime + 5) },
-    ArrowUp: () => { e.preventDefault(); controls.setVolume(state.volume + 0.1) },
-    ArrowDown: () => { e.preventDefault(); controls.setVolume(state.volume - 0.1) },
+    Space: () => {
+      e.preventDefault()
+      togglePlay()
+    },
+    KeyK: () => {
+      e.preventDefault()
+      togglePlay()
+    },
+    ArrowLeft: () => {
+      e.preventDefault()
+      controls.seek(state.currentTime - 5)
+    },
+    ArrowRight: () => {
+      e.preventDefault()
+      controls.seek(state.currentTime + 5)
+    },
+    ArrowUp: () => {
+      e.preventDefault()
+      controls.setVolume(state.volume + 0.1)
+    },
+    ArrowDown: () => {
+      e.preventDefault()
+      controls.setVolume(state.volume - 0.1)
+    },
     KeyM: () => controls.toggleMute(),
     KeyF: () => controls.toggleFullscreen(),
   }
@@ -166,11 +210,7 @@ function onKeydown(e: KeyboardEvent) {
     </VpLoadingOverlay>
 
     <!-- Error overlay -->
-    <VpErrorOverlay
-      v-else-if="state.error"
-      :error="state.error"
-      @retry="controls.retry"
-    >
+    <VpErrorOverlay v-else-if="state.error" :error="state.error" @retry="controls.retry">
       <template #default="slotProps">
         <slot name="error" v-bind="slotProps" />
       </template>
@@ -197,10 +237,7 @@ function onKeydown(e: KeyboardEvent) {
             @set-volume="controls.setVolume"
           />
 
-          <VpTimeDisplay
-            :current-time="state.currentTime"
-            :duration="state.duration"
-          />
+          <VpTimeDisplay :current-time="state.currentTime" :duration="state.duration" />
 
           <div class="vp-spacer" />
 

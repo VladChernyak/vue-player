@@ -22,11 +22,14 @@ const seekRatio = ref(0)
 // until currentTime catches up (video may be buffering)
 const pendingSeekTime = ref<number | null>(null)
 
-watch(() => props.currentTime, (t) => {
-  if (pendingSeekTime.value !== null && Math.abs(t - pendingSeekTime.value) < 1) {
-    pendingSeekTime.value = null
-  }
-})
+watch(
+  () => props.currentTime,
+  (t) => {
+    if (pendingSeekTime.value !== null && Math.abs(t - pendingSeekTime.value) < 1) {
+      pendingSeekTime.value = null
+    }
+  },
+)
 
 const displayTime = computed(() => {
   if (isSeeking.value) return seekRatio.value * props.duration
@@ -34,14 +37,13 @@ const displayTime = computed(() => {
   return props.currentTime
 })
 
-const progressRatio = computed(() =>
-  props.duration > 0 ? displayTime.value / props.duration : 0,
-)
-const bufferedRatio = computed(() =>
-  props.duration > 0 ? props.buffered / props.duration : 0,
-)
+const progressRatio = computed(() => (props.duration > 0 ? displayTime.value / props.duration : 0))
+const bufferedRatio = computed(() => (props.duration > 0 ? props.buffered / props.duration : 0))
 
-interface Segment { start: number; end: number }
+interface Segment {
+  start: number
+  end: number
+}
 
 const segments = computed<Segment[]>(() => {
   const dur = props.duration
@@ -118,17 +120,9 @@ const thumbPct = computed(() => progressRatio.value * 100)
       <div class="vp-timeline-fill" :style="{ width: segmentFill(seg) + '%' }" />
     </div>
 
-    <div
-      v-if="duration > 0"
-      class="vp-timeline-thumb"
-      :style="{ left: `${thumbPct}%` }"
-    />
+    <div v-if="duration > 0" class="vp-timeline-thumb" :style="{ left: `${thumbPct}%` }" />
 
-    <div
-      v-if="isSeeking"
-      class="vp-timeline-tooltip"
-      :style="{ left: `${thumbPct}%` }"
-    >
+    <div v-if="isSeeking" class="vp-timeline-tooltip" :style="{ left: `${thumbPct}%` }">
       {{ formatTime(displayTime) }}
     </div>
   </div>

@@ -15,9 +15,7 @@ const emit = defineEmits<{ retry: [] }>()
       <div class="vp-error">
         <VpIcon name="alert" class="vp-error-icon" />
         <div class="vp-error-message">{{ error.message }}</div>
-        <button class="vp-error-retry" @click="emit('retry')">
-          Try again
-        </button>
+        <button class="vp-error-retry" @click="emit('retry')">Try again</button>
       </div>
     </slot>
   </div>

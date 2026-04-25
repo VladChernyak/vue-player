@@ -62,12 +62,17 @@ const active = ref(sources[0])
         <section class="card">
           <h3 class="card-title">Theme tokens</h3>
           <p class="card-hint">
-            Override CSS variables on <code>.vp-player</code> to customise the player.
+            Override CSS variables on
+            <code>.vp-player</code>
+            to customise the player.
           </p>
           <code class="code-block">
-            .my-player {<br>
-            &nbsp;&nbsp;--vp-primary: #ff6b6b;<br>
-            &nbsp;&nbsp;--vp-radius: 0px;<br>
+            .my-player {
+            <br />
+            &nbsp;&nbsp;--vp-primary: #ff6b6b;
+            <br />
+            &nbsp;&nbsp;--vp-radius: 0px;
+            <br />
             }
           </code>
         </section>
@@ -78,19 +83,25 @@ const active = ref(sources[0])
 
 <style>
 /* ─── Reset ─── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 /* ─── Base ─── */
 :root {
-  --pg-bg:        #0b0b0f;
-  --pg-surface:   #111118;
-  --pg-border:    rgba(255, 255, 255, 0.07);
-  --pg-text-1:    #efefef;
-  --pg-text-2:    rgba(255, 255, 255, 0.50);
-  --pg-text-3:    rgba(255, 255, 255, 0.28);
-  --pg-accent:    #3DD68C;
-  --pg-radius:    12px;
-  --pg-font:      ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --pg-bg: #0b0b0f;
+  --pg-surface: #111118;
+  --pg-border: rgba(255, 255, 255, 0.07);
+  --pg-text-1: #efefef;
+  --pg-text-2: rgba(255, 255, 255, 0.5);
+  --pg-text-3: rgba(255, 255, 255, 0.28);
+  --pg-accent: #3dd68c;
+  --pg-radius: 12px;
+  --pg-font: ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
 body {
@@ -108,7 +119,7 @@ body {
   top: 0;
   z-index: 50;
   border-bottom: 1px solid var(--pg-border);
-  background: rgba(11, 11, 15, 0.80);
+  background: rgba(11, 11, 15, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -142,7 +153,7 @@ body {
   padding: 2px 8px;
   background: rgba(61, 214, 140, 0.12);
   color: var(--pg-accent);
-  border: 1px solid rgba(61, 214, 140, 0.20);
+  border: 1px solid rgba(61, 214, 140, 0.2);
   border-radius: 9999px;
   font-size: 11px;
   font-weight: 500;
@@ -161,7 +172,9 @@ body {
 }
 
 @media (max-width: 800px) {
-  .main { grid-template-columns: 1fr; }
+  .main {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ─── Player ─── */
@@ -177,7 +190,7 @@ body {
   overflow: hidden;
   box-shadow:
     0 0 0 1px var(--pg-border),
-    0 24px 64px rgba(0, 0, 0, 0.60);
+    0 24px 64px rgba(0, 0, 0, 0.6);
 }
 
 /* ─── Sidebar ─── */
@@ -215,7 +228,7 @@ body {
 .card-hint code {
   font-family: ui-monospace, monospace;
   font-size: 12px;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
   padding: 1px 5px;
   border-radius: 4px;
 }
@@ -239,16 +252,19 @@ body {
   font-family: inherit;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease,
+    background 0.15s ease;
 }
 
 .source-btn:hover {
-  border-color: rgba(255,255,255,0.16);
+  border-color: rgba(255, 255, 255, 0.16);
   color: var(--pg-text-1);
 }
 
 .source-btn.active {
-  border-color: rgba(61, 214, 140, 0.40);
+  border-color: rgba(61, 214, 140, 0.4);
   background: rgba(61, 214, 140, 0.08);
   color: var(--pg-accent);
 }
@@ -260,7 +276,7 @@ body {
   font-size: 12px;
   line-height: 1.7;
   color: var(--pg-text-2);
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--pg-border);
   border-radius: 8px;
   padding: 12px 14px;

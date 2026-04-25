@@ -1,0 +1,100 @@
+/**
+ * vue-player design tokens
+ * Override any variable on .vp-player or a parent element.
+ *
+ * Example:
+ *   .my-player { --vp-primary: #ff6b6b; --vp-radius: 0px; }
+ */
+
+:root {
+  /* ─── Brand ─── */
+  --vp-primary:            #3DD68C;
+  --vp-primary-hover:      #2EC97A;
+  --vp-primary-active:     #24B86E;
+  --vp-primary-glow:       rgba(61, 214, 140, 0.20);
+
+  /* ─── Neutral palette (dark) ─── */
+  --vp-bg:                 #000;
+  --vp-surface-1:          rgba(15, 15, 15, 0.95);
+  --vp-surface-2:          rgba(26, 26, 26, 0.95);
+  --vp-surface-3:          rgba(38, 38, 38, 0.95);
+  --vp-border:             rgba(255, 255, 255, 0.08);
+
+  /* ─── Text ─── */
+  --vp-text-1:             #ffffff;
+  --vp-text-2:             rgba(255, 255, 255, 0.70);
+  --vp-text-3:             rgba(255, 255, 255, 0.40);
+
+  /* ─── Controls bar ─── */
+  --vp-controls-bg:        linear-gradient(
+                             to top,
+                             rgba(0, 0, 0, 0.82) 0%,
+                             rgba(0, 0, 0, 0.40) 60%,
+                             transparent 100%
+                           );
+  --vp-controls-padding:   12px 16px 14px;
+  --vp-controls-gap:       6px;
+  --vp-controls-height:    44px;
+
+  /* ─── Layout / radius ─── */
+  --vp-radius:             12px;     /* player outer */
+  --vp-radius-sm:          8px;
+  --vp-radius-xs:          6px;
+  --vp-radius-pill:        9999px;
+
+  /* ─── Timeline ─── */
+  --vp-timeline-height:          4px;
+  --vp-timeline-height-hover:    6px;
+  --vp-timeline-radius:          var(--vp-radius-pill);
+  --vp-timeline-bg:              rgba(255, 255, 255, 0.18);
+  --vp-timeline-buffered:        rgba(255, 255, 255, 0.32);
+  --vp-timeline-progress:        var(--vp-primary);
+  --vp-timeline-gap:             3px;   /* gap between chapter segments */
+
+  /* ─── Thumb (scrubber handle) ─── */
+  --vp-thumb-size:         14px;
+  --vp-thumb-color:        #fff;
+  --vp-thumb-shadow:       0 0 0 3px var(--vp-primary-glow);
+
+  /* ─── Volume slider ─── */
+  --vp-volume-width:       72px;
+
+  /* ─── Buttons ─── */
+  --vp-button-size:        36px;
+  --vp-button-radius:      var(--vp-radius-pill);
+  --vp-button-hover-bg:    rgba(255, 255, 255, 0.10);
+  --vp-button-active-bg:   rgba(255, 255, 255, 0.16);
+  --vp-icon-size:          18px;
+
+  /* ─── Menus (quality / speed / subtitles) ─── */
+  --vp-menu-bg:            var(--vp-surface-1);
+  --vp-menu-border:        var(--vp-border);
+  --vp-menu-radius:        var(--vp-radius-sm);
+  --vp-menu-shadow:        0 8px 32px rgba(0, 0, 0, 0.60),
+                           0 2px 8px  rgba(0, 0, 0, 0.40);
+  --vp-menu-item-hover:    rgba(255, 255, 255, 0.08);
+  --vp-menu-item-active:   rgba(61, 214, 140, 0.12);
+  --vp-menu-item-radius:   var(--vp-radius-xs);
+
+  /* ─── Badges ─── */
+  --vp-live-bg:            #ef4444;
+  --vp-live-color:         #fff;
+
+  /* ─── Overlays ─── */
+  --vp-overlay-bg:         rgba(0, 0, 0, 0.50);
+
+  /* ─── Spinner ─── */
+  --vp-spinner-size:       36px;
+  --vp-spinner-color:      var(--vp-primary);
+  --vp-spinner-track:      rgba(255, 255, 255, 0.12);
+
+  /* ─── Typography ─── */
+  --vp-font-family:        inherit;
+  --vp-font-size:          13px;
+  --vp-font-size-sm:       11px;
+  --vp-font-weight:        500;
+
+  /* ─── Transitions ─── */
+  --vp-transition:         0.2s ease;
+  --vp-transition-fast:    0.12s ease;
+}

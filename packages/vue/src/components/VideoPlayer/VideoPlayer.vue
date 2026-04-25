@@ -1,8 +1,15 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import type { VideoSource, Track, Chapter } from '@vue-player/core'
+import { onMounted, ref, watch } from 'vue'
+import type { Chapter, Track, VideoSource } from '@vue-player/core'
 import { usePlayer } from '../../composables/usePlayer'
-import './VideoPlayer.css'
+import VpIcon from '../VpIcon.vue'
+import VpPlayButton from '../controls/VpPlayButton.vue'
+import VpTimeline from '../controls/VpTimeline.vue'
+import VpTimeDisplay from '../controls/VpTimeDisplay.vue'
+import VpVolumeControl from '../controls/VpVolumeControl.vue'
+import VpFullscreenButton from '../controls/VpFullscreenButton.vue'
+import VpLoadingOverlay from '../overlays/VpLoadingOverlay.vue'
+import VpErrorOverlay from '../overlays/VpErrorOverlay.vue'
 
 interface Props {
   src?: string
@@ -38,33 +45,32 @@ const emit = defineEmits<{
   pause: []
   ended: []
   timeUpdate: [time: number]
-  seeking: [time: number]
   buffering: [value: boolean]
-  qualityChange: [quality: number | 'auto']
-  speedChange: [rate: number]
-  trackChange: [track: Track | null]
   fullscreenChange: [value: boolean]
   error: [error: import('@vue-player/core').PlayerError]
 }>()
 
 const videoRef = ref<HTMLVideoElement | null>(null)
+const { state, controls, loadSource } = usePlayer(videoRef)
+
+onMounted(() => {
+  if (props.src) loadSource(props.src)
+})
+
+watch(() => props.src, (src) => {
+  if (src) loadSource(src)
+})
+
+watch(() => state.isPlaying, v => v ? emit('play') : emit('pause'))
+watch(() => state.isEnded, v => { if (v) emit('ended') })
+watch(() => state.currentTime, v => emit('timeUpdate', v))
+watch(() => state.isBuffering, v => emit('buffering', v))
+watch(() => state.isFullscreen, v => emit('fullscreenChange', v))
+watch(() => state.error, v => { if (v) emit('error', v) })
+
+// ─── Controls visibility ───
 const controlsVisible = ref(true)
 let hideTimer: ReturnType<typeof setTimeout> | null = null
-
-const { state, controls, loadSource, formatTime } = usePlayer(videoRef)
-
-watch(
-  () => props.src,
-  (src) => { if (src) loadSource(src) },
-  { immediate: true }
-)
-
-watch(() => state.isPlaying, (v) => v ? emit('play') : emit('pause'))
-watch(() => state.isEnded, (v) => { if (v) emit('ended') })
-watch(() => state.currentTime, (v) => emit('timeUpdate', v))
-watch(() => state.isBuffering, (v) => emit('buffering', v))
-watch(() => state.isFullscreen, (v) => emit('fullscreenChange', v))
-watch(() => state.error, (v) => { if (v) emit('error', v) })
 
 function showControls() {
   controlsVisible.value = true
@@ -74,59 +80,59 @@ function showControls() {
   }, 3000)
 }
 
-function handleKeydown(e: KeyboardEvent) {
-  if (!props.keyboard) return
-  switch (e.code) {
-    case 'Space':
-    case 'KeyK':
-      e.preventDefault()
-      state.isPlaying ? controls.pause() : controls.play()
-      break
-    case 'ArrowLeft':
-      e.preventDefault()
-      controls.seek(state.currentTime - 5)
-      break
-    case 'ArrowRight':
-      e.preventDefault()
-      controls.seek(state.currentTime + 5)
-      break
-    case 'ArrowUp':
-      e.preventDefault()
-      controls.setVolume(state.volume + 0.1)
-      break
-    case 'ArrowDown':
-      e.preventDefault()
-      controls.setVolume(state.volume - 0.1)
-      break
-    case 'KeyM':
-      controls.toggleMute()
-      break
-    case 'KeyF':
-      controls.toggleFullscreen()
-      break
+function onMouseLeave() {
+  if (state.isPlaying) controlsVisible.value = false
+}
+
+// ─── Play/pause flash indicator ───
+const flashIcon = ref<'play' | 'pause' | null>(null)
+const flashKey = ref(0)
+let flashTimer: ReturnType<typeof setTimeout> | null = null
+
+function triggerFlash(icon: 'play' | 'pause') {
+  if (flashTimer) clearTimeout(flashTimer)
+  flashIcon.value = icon
+  flashKey.value++                                          // remount → restart CSS animation
+  flashTimer = setTimeout(() => { flashIcon.value = null }, 700)
+}
+
+function togglePlay() {
+  if (state.isPlaying) {
+    controls.pause()
+    triggerFlash('pause')
+  }
+  else {
+    controls.play()
+    triggerFlash('play')
   }
 }
 
-function onTimelineClick(e: MouseEvent) {
-  const track = (e.currentTarget as HTMLElement)
-  const rect = track.getBoundingClientRect()
-  const ratio = (e.clientX - rect.left) / rect.width
-  controls.seek(ratio * state.duration)
+// ─── Keyboard shortcuts ───
+function onKeydown(e: KeyboardEvent) {
+  if (!props.keyboard) return
+  showControls()
+  const map: Record<string, () => void> = {
+    Space: () => { e.preventDefault(); togglePlay() },
+    KeyK: () => { e.preventDefault(); togglePlay() },
+    ArrowLeft: () => { e.preventDefault(); controls.seek(state.currentTime - 5) },
+    ArrowRight: () => { e.preventDefault(); controls.seek(state.currentTime + 5) },
+    ArrowUp: () => { e.preventDefault(); controls.setVolume(state.volume + 0.1) },
+    ArrowDown: () => { e.preventDefault(); controls.setVolume(state.volume - 0.1) },
+    KeyM: () => controls.toggleMute(),
+    KeyF: () => controls.toggleFullscreen(),
+  }
+  map[e.code]?.()
 }
-
-const progressPct = () => state.duration ? (state.currentTime / state.duration) * 100 : 0
-const bufferedPct = () => state.duration ? (state.buffered / state.duration) * 100 : 0
-const thumbLeft = () => `${progressPct()}%`
 </script>
 
 <template>
   <div
     class="vp-player"
     :class="{ 'vp-controls-hidden': !controlsVisible }"
-    @mousemove="showControls"
-    @mouseleave="controlsVisible = false"
-    @keydown="handleKeydown"
     tabindex="0"
+    @mousemove="showControls"
+    @mouseleave="onMouseLeave"
+    @keydown="onKeydown"
   >
     <video
       ref="videoRef"
@@ -134,7 +140,6 @@ const thumbLeft = () => `${progressPct()}%`
       :loop="loop"
       :muted="muted"
       :autoplay="autoplay"
-      :playbackRate="playbackRate"
       preload="metadata"
     >
       <track
@@ -148,82 +153,66 @@ const thumbLeft = () => `${progressPct()}%`
       />
     </video>
 
-    <!-- Loading overlay -->
-    <div v-if="state.isLoading || state.isBuffering" class="vp-overlay">
-      <slot name="loading">
-        <div class="vp-loading-spinner" />
-      </slot>
+    <!-- Play/pause flash animation — key remount restarts CSS animation without Vue Transition flicker -->
+    <div v-if="flashIcon" :key="flashKey" class="vp-play-flash">
+      <div class="vp-play-flash-circle">
+        <VpIcon :name="flashIcon" />
+      </div>
     </div>
 
+    <!-- Loading overlay -->
+    <VpLoadingOverlay v-if="state.isLoading || state.isBuffering">
+      <slot name="loading" />
+    </VpLoadingOverlay>
+
     <!-- Error overlay -->
-    <div v-if="state.error" class="vp-overlay">
-      <slot name="error" :error="state.error">
-        <div class="vp-error">
-          <span>⚠</span>
-          <span>{{ state.error.message }}</span>
-        </div>
-      </slot>
-    </div>
+    <VpErrorOverlay
+      v-else-if="state.error"
+      :error="state.error"
+      @retry="controls.retry"
+    >
+      <template #default="slotProps">
+        <slot name="error" v-bind="slotProps" />
+      </template>
+    </VpErrorOverlay>
 
     <!-- Controls -->
     <div class="vp-controls">
-      <!-- Timeline -->
-      <div class="vp-timeline" @click="onTimelineClick">
-        <div class="vp-timeline-track">
-          <div class="vp-timeline-buffered" :style="{ width: bufferedPct() + '%' }" />
-          <div class="vp-timeline-progress" :style="{ width: progressPct() + '%' }" />
-        </div>
-        <div class="vp-timeline-thumb" :style="{ left: thumbLeft() }" />
-      </div>
+      <VpTimeline
+        :current-time="state.currentTime"
+        :duration="state.duration"
+        :buffered="state.buffered"
+        :chapters="chapters"
+        @seek="controls.seek"
+      />
 
-      <!-- Controls row -->
       <slot name="controls" :state="state" :player="controls">
         <div class="vp-controls-row">
-          <!-- Play/Pause -->
-          <button class="vp-button" @click="state.isPlaying ? controls.pause() : controls.play()">
-            <slot v-if="state.isPlaying" name="pause-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" />
-              </svg>
-            </slot>
-            <slot v-else name="play-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="5,3 19,12 5,21" />
-              </svg>
-            </slot>
-          </button>
+          <VpPlayButton :is-playing="state.isPlaying" @click="togglePlay" />
 
-          <!-- Volume -->
-          <button class="vp-button" @click="controls.toggleMute()">
-            <slot name="volume-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path v-if="state.isMuted || state.volume === 0" d="M16.5 12A4.5 4.5 0 0 0 14 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.796 8.796 0 0 0 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zm-9.5-9L7 7H3v4h4l2.5 2.5V3zM19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
-                <path v-else d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
-              </svg>
-            </slot>
-          </button>
+          <VpVolumeControl
+            :volume="state.volume"
+            :is-muted="state.isMuted"
+            @toggle-mute="controls.toggleMute"
+            @set-volume="controls.setVolume"
+          />
 
-          <!-- Time -->
-          <span class="vp-time">
-            {{ formatTime(state.currentTime) }}
-            <span class="vp-time-separator">/</span>
-            {{ formatTime(state.duration) }}
-          </span>
+          <VpTimeDisplay
+            :current-time="state.currentTime"
+            :duration="state.duration"
+          />
 
           <div class="vp-spacer" />
 
-          <!-- Live badge -->
-          <span v-if="state.isLive || live" class="vp-live-badge">Live</span>
+          <span v-if="state.isLive || live" class="vp-live-badge">
+            <span class="vp-live-dot" />
+            Live
+          </span>
 
-          <!-- Fullscreen -->
-          <button class="vp-button" @click="controls.toggleFullscreen()">
-            <slot name="fullscreen-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path v-if="state.isFullscreen" d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
-                <path v-else d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-              </svg>
-            </slot>
-          </button>
+          <VpFullscreenButton
+            :is-fullscreen="state.isFullscreen"
+            @click="controls.toggleFullscreen"
+          />
         </div>
       </slot>
     </div>

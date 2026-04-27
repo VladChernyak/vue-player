@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import VpIcon from '../VpIcon.vue'
+import IcoVolumeHigh from '../icons/IcoVolumeHigh.vue'
+import IcoVolumeLow from '../icons/IcoVolumeLow.vue'
+import IcoVolumeMuted from '../icons/IcoVolumeMuted.vue'
 
 const props = defineProps<{
   volume: number
@@ -11,12 +13,6 @@ const emit = defineEmits<{
   setVolume: [value: number]
 }>()
 
-const iconName = () => {
-  if (props.isMuted || props.volume === 0) return 'volume-muted'
-  if (props.volume > 0.5) return 'volume-high'
-  return 'volume-low'
-}
-
 function onInput(e: Event) {
   emit('setVolume', Number((e.target as HTMLInputElement).value))
 }
@@ -24,8 +20,14 @@ function onInput(e: Event) {
 
 <template>
   <div class="vp-volume">
-    <button class="vp-button" @click="emit('toggleMute')">
-      <VpIcon :name="iconName()" />
+    <button
+      class="vp-button"
+      :aria-label="isMuted || volume === 0 ? 'Unmute' : 'Mute'"
+      @click="emit('toggleMute')"
+    >
+      <IcoVolumeMuted v-if="isMuted || volume === 0" />
+      <IcoVolumeLow v-else-if="volume <= 0.5" />
+      <IcoVolumeHigh v-else />
     </button>
     <input
       class="vp-volume-slider"

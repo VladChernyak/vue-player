@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import type { PlayerError } from '@vue-player/core'
-import VpIcon from '../VpIcon.vue'
+import IcoAlert from '../icons/IcoAlert.vue'
 
-defineProps<{
-  error: PlayerError
-}>()
-
+defineProps<{ error: PlayerError }>()
 const emit = defineEmits<{ retry: [] }>()
 </script>
 
@@ -13,7 +10,7 @@ const emit = defineEmits<{ retry: [] }>()
   <div class="vp-overlay">
     <slot :error="error" :retry="() => emit('retry')">
       <div class="vp-error">
-        <VpIcon name="alert" class="vp-error-icon" />
+        <IcoAlert class="vp-error-icon" />
         <div class="vp-error-message">{{ error.message }}</div>
         <button class="vp-error-retry" @click="emit('retry')">Try again</button>
       </div>

@@ -40,6 +40,12 @@
   object-fit: contain;
 }
 
+.vp-video-click-area {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+
 /* ─── Controls bar ─── */
 
 .vp-controls {
@@ -77,6 +83,7 @@
 /* ─── Buttons ─── */
 
 .vp-button {
+  position: relative; /* for tooltip ::after */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -101,6 +108,11 @@
   background: var(--vp-button-active-bg);
   transform: scale(0.92);
 }
+.vp-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 .vp-button:focus {
   outline: none;
 }
@@ -113,6 +125,44 @@
   width: var(--vp-icon-size);
   height: var(--vp-icon-size);
   flex-shrink: 0;
+}
+
+/* ─── Tooltips ─── */
+
+.vp-button[aria-label]::after {
+  content: attr(aria-label);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: 4px 8px;
+  background: var(--vp-surface-1);
+  border: 1px solid var(--vp-border);
+  border-radius: var(--vp-radius-xs);
+  font-size: var(--vp-font-size-sm);
+  color: var(--vp-text-1);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+  z-index: 200;
+}
+
+.vp-button[aria-label]:not(.vp-menu-open):hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.vp-speed-button {
+  width: auto;
+  min-width: var(--vp-button-size);
+  padding: 0 8px;
+  font-size: var(--vp-font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ─── Timeline ─── */
@@ -281,10 +331,29 @@
   border-radius: var(--vp-menu-radius);
   box-shadow: var(--vp-menu-shadow);
   padding: 6px;
-  min-width: 130px;
+  min-width: 150px;
   z-index: 100;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transform-origin: bottom right;
+}
+
+.vp-menu-header {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px 8px;
+  font-size: var(--vp-font-size-sm);
+  font-weight: 600;
+  color: var(--vp-text-1);
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid var(--vp-menu-border);
+  margin-bottom: 4px;
+}
+
+.vp-menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
 .vp-menu-label {
@@ -301,7 +370,7 @@
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 7px 10px;
+  padding: 8px 10px;
   background: none;
   border: none;
   border-radius: var(--vp-menu-item-radius);
@@ -320,9 +389,308 @@
   background: var(--vp-menu-item-hover);
   color: var(--vp-text-1);
 }
+
 .vp-menu-item.vp-active {
   background: var(--vp-menu-item-active);
   color: var(--vp-primary);
+  font-weight: 600;
+}
+
+/* Check icon — always in layout, visible only on active */
+.vp-check-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity var(--vp-transition-fast);
+}
+
+.vp-menu-item.vp-active .vp-check-icon {
+  opacity: 1;
+}
+
+/* ─── Settings menu ─── */
+
+.vp-settings-icon {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vp-settings-icon--open {
+  transform: rotate(135deg);
+}
+
+.vp-settings-menu {
+  padding: 6px;
+  min-width: 200px;
+}
+
+.vp-settings-body {
+  position: relative;
+  overflow: hidden;
+  transition: height 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vp-settings-panel {
+  width: 100%;
+}
+
+.vp-settings-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 10px;
+  background: none;
+  border: none;
+  border-radius: var(--vp-menu-item-radius);
+  color: var(--vp-text-2);
+  font-size: var(--vp-font-size);
+  font-weight: var(--vp-font-weight);
+  cursor: pointer;
+  transition:
+    background var(--vp-transition-fast),
+    color var(--vp-transition-fast);
+}
+
+.vp-settings-row:hover {
+  background: var(--vp-menu-item-hover);
+  color: var(--vp-text-1);
+}
+
+.vp-settings-row-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--vp-text-3);
+}
+
+.vp-settings-row-label {
+  flex: 1;
+  text-align: left;
+}
+
+.vp-settings-row-value {
+  font-size: var(--vp-font-size-sm);
+  color: var(--vp-text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.vp-settings-row-arrow {
+  width: 14px;
+  height: 14px;
+  color: var(--vp-text-3);
+  flex-shrink: 0;
+}
+
+.vp-settings-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 10px 10px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--vp-menu-border);
+  color: var(--vp-text-1);
+  font-size: var(--vp-font-size);
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: color var(--vp-transition-fast);
+}
+
+.vp-settings-back:hover {
+  color: var(--vp-primary);
+}
+
+.vp-settings-back-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* ─── Speed panel ─── */
+
+.vp-speed-track {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px 4px;
+}
+
+.vp-step-button {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.vp-step-button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.vp-speed-current-value {
+  text-align: center;
+  padding: 6px 10px 2px;
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--vp-primary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* Custom div-based slider (animatable thumb via JS) */
+.vp-cslider {
+  position: relative;
+  flex: 1;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.vp-cslider-rail {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  height: 4px;
+  background: var(--vp-timeline-bg);
+  border-radius: var(--vp-radius-pill);
+  pointer-events: none;
+}
+
+.vp-cslider-fill {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  background: var(--vp-primary);
+  border-radius: var(--vp-radius-pill);
+  pointer-events: none;
+  transition: width 0.016s linear; /* matches rAF cadence */
+}
+
+.vp-cslider-thumb {
+  position: absolute;
+  top: 50%;
+  width: var(--vp-thumb-size);
+  height: var(--vp-thumb-size);
+  transform: translate(-50%, -50%);
+  background: var(--vp-primary);
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  transition: left 0.016s linear;
+}
+
+.vp-cslider-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+}
+
+/* Speed badges row */
+.vp-speed-badges {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px 10px;
+}
+
+.vp-speed-badge {
+  flex: 1;
+  text-align: center;
+  padding: 3px 4px;
+  border-radius: var(--vp-radius-pill);
+  border: 1px solid var(--vp-menu-border);
+  background: none;
+  color: var(--vp-text-2);
+  font-size: var(--vp-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition:
+    background var(--vp-transition-fast),
+    color var(--vp-transition-fast),
+    border-color var(--vp-transition-fast);
+}
+
+.vp-speed-badge:hover {
+  background: var(--vp-menu-item-hover);
+  color: var(--vp-text-1);
+}
+
+.vp-speed-badge.vp-active {
+  background: var(--vp-primary);
+  border-color: var(--vp-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.vp-menu-sep {
+  height: 1px;
+  background: var(--vp-menu-border);
+  margin: 2px 6px 6px;
+}
+
+/* ─── Panel slide transitions ─── */
+
+.vp-slide-fwd-enter-active,
+.vp-slide-fwd-leave-active,
+.vp-slide-bck-enter-active,
+.vp-slide-bck-leave-active {
+  transition:
+    transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.22s ease;
+}
+
+.vp-slide-fwd-leave-active,
+.vp-slide-bck-leave-active {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.vp-slide-fwd-enter-from {
+  transform: translateX(40%);
+  opacity: 0;
+}
+.vp-slide-fwd-leave-to {
+  transform: translateX(-40%);
+  opacity: 0;
+}
+
+.vp-slide-bck-enter-from {
+  transform: translateX(-40%);
+  opacity: 0;
+}
+.vp-slide-bck-leave-to {
+  transform: translateX(40%);
+  opacity: 0;
+}
+
+/* ─── Popup animation (reused by all settings menus) ─── */
+
+.vp-popup-enter-active {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vp-popup-leave-active {
+  transition:
+    opacity 0.12s ease,
+    transform 0.12s ease;
+}
+
+.vp-popup-enter-from,
+.vp-popup-leave-to {
+  opacity: 0;
+  transform: scale(0.9) translateY(8px);
 }
 
 /* ─── Live badge ─── */

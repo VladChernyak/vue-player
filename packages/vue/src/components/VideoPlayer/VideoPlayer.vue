@@ -2,12 +2,14 @@
 import { onMounted, ref, watch } from 'vue'
 import type { Chapter, Track, VideoSource } from '@vue-player/core'
 import { usePlayer } from '../../composables/usePlayer'
-import VpIcon from '../VpIcon.vue'
+import IcoPlay from '../icons/IcoPlay.vue'
+import IcoPause from '../icons/IcoPause.vue'
 import VpPlayButton from '../controls/VpPlayButton.vue'
 import VpTimeline from '../controls/VpTimeline.vue'
 import VpTimeDisplay from '../controls/VpTimeDisplay.vue'
 import VpVolumeControl from '../controls/VpVolumeControl.vue'
 import VpFullscreenButton from '../controls/VpFullscreenButton.vue'
+import VpSettingsButton from '../controls/VpSettingsButton.vue'
 import VpLoadingOverlay from '../overlays/VpLoadingOverlay.vue'
 import VpErrorOverlay from '../overlays/VpErrorOverlay.vue'
 
@@ -46,6 +48,7 @@ const emit = defineEmits<{
   ended: []
   timeUpdate: [time: number]
   buffering: [value: boolean]
+  speedChange: [rate: number]
   fullscreenChange: [value: boolean]
   error: [error: import('@vue-player/core').PlayerError]
 }>()
@@ -81,6 +84,10 @@ watch(
 watch(
   () => state.isBuffering,
   (v) => emit('buffering', v),
+)
+watch(
+  () => state.playbackRate,
+  (v) => emit('speedChange', v),
 )
 watch(
   () => state.isFullscreen,
@@ -197,10 +204,14 @@ function onKeydown(e: KeyboardEvent) {
       />
     </video>
 
+    <!-- Transparent click area for play/pause — sits above video, below overlays/controls -->
+    <div class="vp-video-click-area" @click="togglePlay" />
+
     <!-- Play/pause flash animation — key remount restarts CSS animation without Vue Transition flicker -->
     <div v-if="flashIcon" :key="flashKey" class="vp-play-flash">
       <div class="vp-play-flash-circle">
-        <VpIcon :name="flashIcon" />
+        <IcoPause v-if="flashIcon === 'pause'" />
+        <IcoPlay v-else />
       </div>
     </div>
 
@@ -245,6 +256,12 @@ function onKeydown(e: KeyboardEvent) {
             <span class="vp-live-dot" />
             Live
           </span>
+
+          <VpSettingsButton
+            :playback-rate="state.playbackRate"
+            :playback-rates="playbackRates"
+            @set-speed="controls.setSpeed"
+          />
 
           <VpFullscreenButton
             :is-fullscreen="state.isFullscreen"

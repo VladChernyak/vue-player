@@ -13,6 +13,7 @@ export interface PlayerControls {
   setQuality: (value: number | 'auto') => void
   setTrack: (track: Track | null) => void
   toggleFullscreen: () => Promise<void>
+  togglePiP: () => Promise<void>
   retry: () => void
 }
 
@@ -220,6 +221,9 @@ export function usePlayer(videoRef: Ref<HTMLVideoElement | null>) {
       state.isBuffering = false
     })
 
+    video.addEventListener('enterpictureinpicture', () => { state.isPiP = true })
+    video.addEventListener('leavepictureinpicture', () => { state.isPiP = false })
+
     // Fullscreen must be observed on document — the player element is not <video>
     document.addEventListener('fullscreenchange', onFullscreenChange)
   }
@@ -267,6 +271,12 @@ export function usePlayer(videoRef: Ref<HTMLVideoElement | null>) {
       if (!el) return
       if (document.fullscreenElement) await document.exitFullscreen()
       else await el.requestFullscreen()
+    },
+    async togglePiP() {
+      const video = videoRef.value
+      if (!video) return
+      if (document.pictureInPictureElement) await document.exitPictureInPicture()
+      else await video.requestPictureInPicture()
     },
     retry() {
       if (lastSrc) loadSource(lastSrc)

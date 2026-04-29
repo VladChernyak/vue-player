@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import type { Chapter, Track, VideoSource } from '@vue-player/core'
+import { isPiPSupported } from '@vue-player/core'
 import { usePlayer } from '../../composables/usePlayer'
 import IcoPlay from '../icons/IcoPlay.vue'
 import IcoPause from '../icons/IcoPause.vue'
@@ -8,6 +9,7 @@ import VpPlayButton from '../controls/VpPlayButton.vue'
 import VpTimeline from '../controls/VpTimeline.vue'
 import VpTimeDisplay from '../controls/VpTimeDisplay.vue'
 import VpVolumeControl from '../controls/VpVolumeControl.vue'
+import VpPiPButton from '../controls/VpPiPButton.vue'
 import VpFullscreenButton from '../controls/VpFullscreenButton.vue'
 import VpSettingsButton from '../controls/VpSettingsButton.vue'
 import VpLoadingOverlay from '../overlays/VpLoadingOverlay.vue'
@@ -56,7 +58,10 @@ const emit = defineEmits<{
 const videoRef = ref<HTMLVideoElement | null>(null)
 const { state, controls, loadSource } = usePlayer(videoRef)
 
+const pipSupported = ref(false)
+
 onMounted(() => {
+  pipSupported.value = isPiPSupported()
   if (props.src) loadSource(props.src)
 })
 
@@ -171,6 +176,7 @@ function onKeydown(e: KeyboardEvent) {
     },
     KeyM: () => controls.toggleMute(),
     KeyF: () => controls.toggleFullscreen(),
+    KeyP: () => { if (props.pip && pipSupported.value) controls.togglePiP() },
   }
   map[e.code]?.()
 }
@@ -256,6 +262,12 @@ function onKeydown(e: KeyboardEvent) {
             <span class="vp-live-dot" />
             Live
           </span>
+
+          <VpPiPButton
+            v-if="pip && pipSupported"
+            :is-pi-p="state.isPiP"
+            @click="controls.togglePiP"
+          />
 
           <VpSettingsButton
             :playback-rate="state.playbackRate"

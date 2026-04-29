@@ -10,6 +10,7 @@ export interface PlayerControls {
   setVolume: (value: number) => void
   toggleMute: () => void
   setSpeed: (rate: number) => void
+  setQuality: (value: number | 'auto') => void
   setTrack: (track: Track | null) => void
   toggleFullscreen: () => Promise<void>
   retry: () => void
@@ -50,7 +51,8 @@ export function usePlayer(videoRef: Ref<HTMLVideoElement | null>) {
   const state = reactive<PlayerState>(makeDefaultState())
 
   let nativeAdapter: ReturnType<typeof createNativeAdapter> | null = null
-  let hlsInstance: { destroy: () => void } | null = null
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let hlsInstance: any = null
   let lastSrc = ''
 
   function clearVideo() {
@@ -98,6 +100,8 @@ export function usePlayer(videoRef: Ref<HTMLVideoElement | null>) {
     state.duration = 0
     state.buffered = 0
     state.isLive = false
+    state.availableQualities = []
+    state.currentQuality = 'auto'
 
     const type = detectSourceType(src)
 
@@ -112,6 +116,33 @@ export function usePlayer(videoRef: Ref<HTMLVideoElement | null>) {
         }
 
         const hls = new Hls({ enableWorker: true })
+
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          const seen = new Set<number>()
+          state.availableQualities = (hls.levels as any[])
+            .map((level, i) => ({
+              value: level.height as number,
+              label: level.height ? `${level.height}p` : `Level ${i}`,
+              bitrate: level.bitrate as number,
+            }))
+            .filter((q) => {
+              if (seen.has(q.value)) return false
+              seen.add(q.value)
+              return true
+            })
+            .sort((a, b) => b.value - a.value)
+          state.currentQuality = 'auto'
+        })
+
+        hls.on(Hls.Events.LEVEL_SWITCHED, (_, data) => {
+          // Only update displayed quality when ABR switches automatically
+          if (state.currentQuality === 'auto') return
+          const level = (hls.levels as any[])[data.level]
+          if (level && level.height !== state.currentQuality) {
+            // nextLevel has fully applied — confirm it
+            state.currentQuality = level.height
+          }
+        })
 
         hls.on(Hls.Events.ERROR, (_, data) => {
           if (!data.fatal) return
@@ -216,6 +247,17 @@ export function usePlayer(videoRef: Ref<HTMLVideoElement | null>) {
     },
     setSpeed(rate) {
       if (videoRef.value) videoRef.value.playbackRate = rate
+    },
+    setQuality(value) {
+      if (!hlsInstance) return
+      if (value === 'auto') {
+        hlsInstance.currentLevel = -1  // -1 re-enables ABR
+      } else {
+        const idx = (hlsInstance.levels as any[]).findIndex((l) => l.height === value)
+        // nextLevel switches at the next segment boundary — no buffer flush, no freeze
+        if (idx !== -1) hlsInstance.nextLevel = idx
+      }
+      state.currentQuality = value
     },
     setTrack(track) {
       state.currentTrack = track

@@ -1,24 +1,31 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import type { Quality } from '@vue-player/core'
 import IcoSettings from '../icons/IcoSettings.vue'
 import IcoSpeed from '../icons/IcoSpeed.vue'
 import IcoChevronRight from '../icons/IcoChevronRight.vue'
 import IcoChevronLeft from '../icons/IcoChevronLeft.vue'
 import IcoCheck from '../icons/IcoCheck.vue'
+import IcoTuning from '../icons/IcoTuning.vue'
 import IcoMinus from '../icons/IcoMinus.vue'
 import IcoPlus from '../icons/IcoPlus.vue'
 
 const props = defineProps<{
   playbackRate: number
   playbackRates: number[]
+  availableQualities: ReadonlyArray<Quality>
+  currentQuality: number | 'auto'
 }>()
 
-const emit = defineEmits<{ setSpeed: [rate: number] }>()
+const emit = defineEmits<{
+  setSpeed: [rate: number]
+  setQuality: [value: number | 'auto']
+}>()
 
 const SPEED_BADGES = [1, 1.25, 1.5, 1.75, 2]
 
 const isOpen = ref(false)
-const activePanel = ref<'main' | 'speed'>('main')
+const activePanel = ref<'main' | 'speed' | 'quality'>('main')
 const slideDir = ref<'fwd' | 'bck'>('fwd')
 const wrapRef = ref<HTMLElement | null>(null)
 const bodyRef = ref<HTMLElement | null>(null)
@@ -27,12 +34,19 @@ const bodyRef = ref<HTMLElement | null>(null)
 const visualRate = ref(props.playbackRate)
 let rafId: number | null = null
 
-watch(() => props.playbackRate, (v) => {
-  visualRate.value = v
-})
+watch(
+  () => props.playbackRate,
+  (v) => {
+    visualRate.value = v
+  },
+)
 
 function labelRate(rate: number) {
   return `${rate}×`
+}
+
+function labelQuality(q: number | 'auto') {
+  return q === 'auto' ? 'Auto' : `${q}p`
 }
 
 function close() {
@@ -40,20 +54,22 @@ function close() {
   activePanel.value = 'main'
 }
 
-async function goToPanel(panel: 'main' | 'speed') {
-  slideDir.value = panel === 'speed' ? 'fwd' : 'bck'
+async function goToPanel(panel: 'main' | 'speed' | 'quality') {
+  slideDir.value = panel === 'main' ? 'bck' : 'fwd'
   const body = bodyRef.value
-  if (!body) { activePanel.value = panel; return }
+  if (!body) {
+    activePanel.value = panel
+    return
+  }
 
-  const fromH = body.offsetHeight        // measure BEFORE switch
+  const fromH = body.offsetHeight
   activePanel.value = panel
-  await nextTick()                        // wait for new panel in DOM
+  await nextTick()
 
-  // Set height:auto so only the entering panel (leaving has position:absolute) sets the size
   body.style.height = 'auto'
-  const toH = body.offsetHeight          // natural height of entering panel
+  const toH = body.offsetHeight
   body.style.height = fromH + 'px'
-  void body.offsetHeight                  // force reflow
+  void body.offsetHeight
   body.style.height = toH + 'px'
 
   const onEnd = (e: TransitionEvent) => {
@@ -86,10 +102,14 @@ function animateTo(target: number) {
 
   function step(now: number) {
     const t = Math.min((now - start) / duration, 1)
-    const ease = 1 - Math.pow(1 - t, 3) // cubic ease-out
+    const ease = 1 - Math.pow(1 - t, 3)
     visualRate.value = from + (target - from) * ease
-    if (t < 1) { rafId = requestAnimationFrame(step) }
-    else { visualRate.value = target; rafId = null }
+    if (t < 1) {
+      rafId = requestAnimationFrame(step)
+    } else {
+      visualRate.value = target
+      rafId = null
+    }
   }
   rafId = requestAnimationFrame(step)
 }
@@ -101,6 +121,11 @@ function selectBadge(rate: number) {
 
 function sliderThumbPct() {
   return ((visualRate.value - 0.25) / (3 - 0.25)) * 100
+}
+
+function selectQuality(value: number | 'auto') {
+  emit('setQuality', value)
+  close()
 }
 
 function onDocClick(e: MouseEvent) {
@@ -131,11 +156,49 @@ onBeforeUnmount(() => {
           <Transition :name="`vp-slide-${slideDir}`">
             <!-- Main panel -->
             <div v-if="activePanel === 'main'" key="main" class="vp-settings-panel">
+              <button
+                v-if="availableQualities.length > 0"
+                class="vp-settings-row"
+                @click="goToPanel('quality')"
+              >
+                <IcoTuning class="vp-settings-row-icon" />
+                <span class="vp-settings-row-label">Quality</span>
+                <span class="vp-settings-row-value">{{ labelQuality(currentQuality) }}</span>
+                <IcoChevronRight class="vp-settings-row-arrow" />
+              </button>
               <button class="vp-settings-row" @click="goToPanel('speed')">
                 <IcoSpeed class="vp-settings-row-icon" />
                 <span class="vp-settings-row-label">Playback speed</span>
                 <span class="vp-settings-row-value">{{ labelRate(playbackRate) }}</span>
                 <IcoChevronRight class="vp-settings-row-arrow" />
+              </button>
+            </div>
+
+            <!-- Quality panel -->
+            <div v-else-if="activePanel === 'quality'" key="quality" class="vp-settings-panel">
+              <button class="vp-settings-back" @click="goToPanel('main')">
+                <IcoChevronLeft class="vp-settings-back-icon" />
+                Quality
+              </button>
+              <button
+                class="vp-quality-option"
+                :class="{ 'vp-active': currentQuality === 'auto' }"
+                @click="selectQuality('auto')"
+              >
+                <IcoCheck v-if="currentQuality === 'auto'" class="vp-quality-check" />
+                <span v-else class="vp-quality-check" />
+                <span class="vp-quality-label">Auto</span>
+              </button>
+              <button
+                v-for="q in availableQualities"
+                :key="q.value"
+                class="vp-quality-option"
+                :class="{ 'vp-active': currentQuality === q.value }"
+                @click="selectQuality(q.value)"
+              >
+                <IcoCheck v-if="currentQuality === q.value" class="vp-quality-check" />
+                <span v-else class="vp-quality-check" />
+                <span class="vp-quality-label">{{ q.label }}</span>
               </button>
             </div>
 
@@ -146,10 +209,8 @@ onBeforeUnmount(() => {
                 Playback speed
               </button>
 
-              <!-- Current speed value -->
               <div class="vp-speed-current-value">{{ labelRate(playbackRate) }}</div>
 
-              <!-- Slider with step buttons -->
               <div class="vp-speed-track">
                 <button
                   class="vp-button vp-step-button"
@@ -181,7 +242,6 @@ onBeforeUnmount(() => {
                 </button>
               </div>
 
-              <!-- Speed badges -->
               <div class="vp-speed-badges">
                 <button
                   v-for="rate in SPEED_BADGES"

@@ -630,6 +630,44 @@
   font-weight: 600;
 }
 
+/* ─── Quality panel ─── */
+
+
+.vp-quality-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  background: none;
+  border: none;
+  color: var(--vp-text-1);
+  font-size: var(--vp-font-size);
+  cursor: pointer;
+  transition: background var(--vp-transition-fast);
+  text-align: left;
+}
+
+.vp-quality-option:hover {
+  background: var(--vp-menu-item-hover);
+}
+
+.vp-quality-option.vp-active {
+  color: var(--vp-primary);
+  font-weight: 600;
+}
+
+.vp-quality-check {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--vp-primary);
+}
+
+.vp-quality-label {
+  flex: 1;
+}
+
 .vp-menu-sep {
   height: 1px;
   background: var(--vp-menu-border);

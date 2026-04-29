@@ -260,7 +260,10 @@ function onKeydown(e: KeyboardEvent) {
           <VpSettingsButton
             :playback-rate="state.playbackRate"
             :playback-rates="playbackRates"
+            :available-qualities="state.availableQualities"
+            :current-quality="state.currentQuality"
             @set-speed="controls.setSpeed"
+            @set-quality="controls.setQuality"
           />
 
           <VpFullscreenButton

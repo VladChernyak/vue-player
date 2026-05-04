@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import type { Chapter } from '@vue-player/core'
 import { formatTime } from '@vue-player/core'
 
@@ -62,26 +62,35 @@ function ratioFromEvent(e: PointerEvent): number {
   return Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
 }
 
+function stopSeeking() {
+  isSeeking.value = false
+  window.removeEventListener('pointermove', onPointerMove)
+  window.removeEventListener('pointerup', onPointerUp)
+  window.removeEventListener('pointercancel', stopSeeking)
+}
+
 function onPointerDown(e: PointerEvent) {
   if (!props.duration) return
-  ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   isSeeking.value = true
   seekRatio.value = ratioFromEvent(e)
+  window.addEventListener('pointermove', onPointerMove)
+  window.addEventListener('pointerup', onPointerUp)
+  window.addEventListener('pointercancel', stopSeeking)
 }
 
 function onPointerMove(e: PointerEvent) {
-  if (!isSeeking.value) return
   seekRatio.value = ratioFromEvent(e)
 }
 
 function onPointerUp(e: PointerEvent) {
-  if (!isSeeking.value) return
   const ratio = ratioFromEvent(e)
   const time = ratio * props.duration
   pendingSeekTime.value = time
-  isSeeking.value = false
   emit('seek', time)
+  stopSeeking()
 }
+
+onBeforeUnmount(stopSeeking)
 
 function segmentFill(seg: Segment): number {
   const p = progressRatio.value
@@ -106,9 +115,6 @@ const thumbPct = computed(() => progressRatio.value * 100)
     class="vp-timeline"
     :class="{ 'vp-timeline--seeking': isSeeking }"
     @pointerdown="onPointerDown"
-    @pointermove="onPointerMove"
-    @pointerup="onPointerUp"
-    @pointercancel="isSeeking = false"
   >
     <div
       v-for="(seg, i) in segments"

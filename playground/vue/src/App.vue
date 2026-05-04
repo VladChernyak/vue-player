@@ -2,6 +2,22 @@
 import { ref } from 'vue'
 import { VideoPlayer } from '@vue-player/vue'
 
+const testTracks = [
+  {
+    src: '/subtitles-en.vtt',
+    label: 'English',
+    language: 'en',
+    kind: 'subtitles' as const,
+    default: true,
+  },
+  {
+    src: '/subtitles-ru.vtt',
+    label: 'Русский',
+    language: 'ru',
+    kind: 'subtitles' as const,
+  },
+]
+
 const sources = [
   {
     label: 'HLS (VOD)',
@@ -9,11 +25,11 @@ const sources = [
   },
   {
     label: 'MP4',
-    src: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    src: 'https://www.papytane.com/mp4/lessapin.mp4',
   },
   {
     label: 'Live HLS',
-    src: 'https://stream.mux.com/v69RSHhFelSm4701snP22dYz2jICy4E4S.m3u8',
+    src: 'http://sample.vodobox.com/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8',
   },
 ]
 
@@ -37,6 +53,7 @@ const active = ref(sources[0])
         <div class="player-wrap">
           <VideoPlayer
             :src="active.src"
+            :tracks="testTracks"
             :keyboard="true"
             @error="console.error('player error', $event)"
           />

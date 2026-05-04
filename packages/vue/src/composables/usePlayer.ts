@@ -178,12 +178,23 @@ export function usePlayer(videoRef: Ref<HTMLVideoElement | null>) {
     state.isFullscreen = !!document.fullscreenElement
   }
 
+  function applyTrackModes(video: HTMLVideoElement) {
+    const track = state.currentTrack
+    Array.from(video.querySelectorAll<HTMLTrackElement>('track')).forEach((el) => {
+      const t = el.track
+      const isActive = track !== null && t.language === track.language && t.label === track.label
+      t.mode = isActive ? 'hidden' : 'disabled'
+    })
+  }
+
   function attachListeners(video: HTMLVideoElement) {
     video.addEventListener('loadstart', () => {
       state.isLoading = true
       state.error = null
     })
-    video.addEventListener('loadedmetadata', () => syncFromVideo(video))
+    video.addEventListener('loadedmetadata', () => {
+      syncFromVideo(video)
+    })
     video.addEventListener('canplay', () => {
       state.isLoading = false
     })
@@ -221,8 +232,12 @@ export function usePlayer(videoRef: Ref<HTMLVideoElement | null>) {
       state.isBuffering = false
     })
 
-    video.addEventListener('enterpictureinpicture', () => { state.isPiP = true })
-    video.addEventListener('leavepictureinpicture', () => { state.isPiP = false })
+    video.addEventListener('enterpictureinpicture', () => {
+      state.isPiP = true
+    })
+    video.addEventListener('leavepictureinpicture', () => {
+      state.isPiP = false
+    })
 
     // Fullscreen must be observed on document — the player element is not <video>
     document.addEventListener('fullscreenchange', onFullscreenChange)
@@ -255,7 +270,7 @@ export function usePlayer(videoRef: Ref<HTMLVideoElement | null>) {
     setQuality(value) {
       if (!hlsInstance) return
       if (value === 'auto') {
-        hlsInstance.currentLevel = -1  // -1 re-enables ABR
+        hlsInstance.currentLevel = -1 // -1 re-enables ABR
       } else {
         const idx = (hlsInstance.levels as any[]).findIndex((l) => l.height === value)
         // nextLevel switches at the next segment boundary — no buffer flush, no freeze
@@ -265,6 +280,8 @@ export function usePlayer(videoRef: Ref<HTMLVideoElement | null>) {
     },
     setTrack(track) {
       state.currentTrack = track
+      const video = videoRef.value
+      if (video) applyTrackModes(video)
     },
     async toggleFullscreen() {
       const el = videoRef.value?.closest<HTMLElement>('.vp-player')

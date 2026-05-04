@@ -116,6 +116,10 @@
 .vp-button:focus {
   outline: none;
 }
+.vp-button.vp-captions-active {
+  color: var(--vp-primary);
+}
+
 .vp-button:focus-visible {
   outline: 2px solid var(--vp-primary);
   outline-offset: 2px;
@@ -831,6 +835,38 @@
   background: var(--vp-surface-3);
   border-color: var(--vp-primary);
   color: var(--vp-primary);
+}
+
+/* ─── Subtitles overlay ─── */
+
+.vp-subtitles {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--vp-controls-height) + 46px); /* above controls bar */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 0 48px;
+  pointer-events: none;
+  z-index: 5;
+  transition: bottom var(--vp-transition);
+}
+
+.vp-player.vp-controls-hidden .vp-subtitles {
+  bottom: 16px;
+}
+
+.vp-subtitle-cue {
+  background: rgba(8, 8, 8, 0.8);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-size: var(--vp-font-size);
+  line-height: 1.5;
+  text-align: center;
+  white-space: pre-line;
 }
 
 /* ─── Play/pause flash (YouTube-style) ─── */

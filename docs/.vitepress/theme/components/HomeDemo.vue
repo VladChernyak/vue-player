@@ -37,7 +37,7 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  background: linear-gradient(120deg, #3dd68c 0%, #22d3ee 100%);
+  background: linear-gradient(120deg, var(--vp-c-brand-1) 0%, var(--docs-gradient-end, #22d3ee) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

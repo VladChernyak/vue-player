@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch, onUnmounted } from 'vue'
 import { usePlayerTheme } from '../composables/usePlayerTheme'
 
 const { activeId, themes, setTheme } = usePlayerTheme()
@@ -16,11 +16,21 @@ function pick(id: string) {
   isOpen.value = false
 }
 
-function onClickOutside(e: MouseEvent) {
+function onDocClick(e: MouseEvent) {
   if (wrapRef.value && !wrapRef.value.contains(e.target as Node)) {
     isOpen.value = false
   }
 }
+
+watch(isOpen, (open) => {
+  if (open) {
+    setTimeout(() => document.addEventListener('click', onDocClick), 0)
+  } else {
+    document.removeEventListener('click', onDocClick)
+  }
+})
+
+onUnmounted(() => document.removeEventListener('click', onDocClick))
 </script>
 
 <template>
@@ -32,7 +42,6 @@ function onClickOutside(e: MouseEvent) {
       aria-label="Player theme"
       title="Player theme"
       @click="toggle"
-      @blur.capture="onClickOutside"
     >
       <!-- Palette icon -->
       <svg
@@ -118,7 +127,7 @@ function onClickOutside(e: MouseEvent) {
   background: var(--vp-c-bg-elv);
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
-  padding: 12px 14px;
+  padding: 10px 14px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 200;
   white-space: nowrap;
@@ -130,7 +139,7 @@ function onClickOutside(e: MouseEvent) {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--vp-c-text-3);
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 
 .ts-swatches {

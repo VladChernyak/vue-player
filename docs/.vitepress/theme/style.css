@@ -22,9 +22,12 @@
   background-clip: text;
 }
 
-/* ─── Hero: logo glow ─── */
+/* ─── Hero: logo container ─── */
 .VPHero .image-container {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .VPHero .image-container::before {
@@ -43,6 +46,28 @@
   pointer-events: none;
 }
 
+/* Hero SVG: responsive sizing, above the glow layer */
+.VPHero .image-container > svg {
+  position: relative;
+  z-index: 1;
+  width: 160px;
+  height: 160px;
+}
+
+@media (min-width: 640px) {
+  .VPHero .image-container > svg {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHero .image-container > svg {
+    width: 260px;
+    height: 260px;
+  }
+}
+
 .VPHero .image-bg {
   display: none;
 }
@@ -57,16 +82,8 @@
 }
 
 /* Small spacing between injected logo and site title text */
-.VPNavBarTitle {
+.VPNavBarTitle a {
   gap: 6px;
-}
-
-/* ─── Slightly larger logo ─── */
-@media (min-width: 960px) {
-  .VPHero .image-container {
-    width: 280px;
-    height: 280px;
-  }
 }
 
 /* ─── Features: hover glow on icon ─── */

@@ -9,7 +9,7 @@ export default {
   extends: DefaultTheme,
   Layout() {
     return h(DefaultTheme.Layout, null, {
-      'home-hero-image': () => h(LogoIcon, { size: 280 }),
+      'home-hero-image': () => h(LogoIcon, { size: 260 }),
       'nav-bar-title-before': () => h(LogoIcon, { size: 24 }),
       'nav-bar-content-after': () => h(ThemeSwitcher),
     })

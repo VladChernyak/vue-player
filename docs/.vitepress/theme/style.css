@@ -1,0 +1,59 @@
+/* ─── Brand colours ─── */
+:root {
+  --vp-c-brand-1: #3dd68c;
+  --vp-c-brand-2: #2ec97a;
+  --vp-c-brand-3: #24b86e;
+  --vp-c-brand-soft: rgba(61, 214, 140, 0.14);
+}
+
+/* ─── Hero: gradient name "Vue Player" ─── */
+.VPHero .name .clip {
+  background: linear-gradient(120deg, #3dd68c 0%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Hero: logo glow ─── */
+.VPHero .image-container {
+  position: relative;
+}
+
+.VPHero .image-container::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(61, 214, 140, 0.35) 0%,
+    rgba(34, 211, 238, 0.15) 45%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  z-index: 0;
+  filter: blur(24px);
+  pointer-events: none;
+}
+
+.VPHero .image-bg {
+  display: none;
+}
+
+.VPHero .image-container .image-src {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Slightly larger logo ─── */
+@media (min-width: 960px) {
+  .VPHero .image-container {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+/* ─── Features: hover glow on icon ─── */
+.VPFeature:hover .icon {
+  filter: drop-shadow(0 0 8px rgba(61, 214, 140, 0.5));
+  transition: filter 0.25s ease;
+}

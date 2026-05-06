@@ -2,12 +2,12 @@
 layout: home
 
 hero:
-  name: vue-player
-  text: Vue 3 Video Player
-  tagline: Feature-rich, customizable and framework-agnostic. HLS, chapters, subtitles and more — out of the box.
+  name: 'Vue Player'
+  text: 'Video player for Vue 3'
+  tagline: HLS & DASH streaming, chapters, subtitles, thumbnail previews and Picture-in-Picture — out of the box.
   image:
     src: /logo.svg
-    alt: vue-player logo
+    alt: Vue Player logo
   actions:
     - theme: brand
       text: Get Started
@@ -36,3 +36,5 @@ features:
     title: Nuxt Ready
     details: Official Nuxt module with auto-imports for VideoPlayer component and usePlayer composable.
 ---
+
+<HomeDemo />

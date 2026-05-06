@@ -4,13 +4,11 @@ export default defineConfig({
   title: 'vue-player',
   description: 'Feature-rich Vue 3 video player with HLS, chapters, subtitles and more.',
 
-  head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
-  ],
+  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }]],
 
   themeConfig: {
     logo: '/logo.svg',
-    siteTitle: 'vue-player',
+    siteTitle: 'Vue Player',
 
     nav: [
       { text: 'Guide', link: '/guide/introduction' },
@@ -19,7 +17,10 @@ export default defineConfig({
         text: '0.0.1',
         items: [
           { text: 'Changelog', link: 'https://github.com/VladChernyak/vue-player/releases' },
-          { text: 'Contributing', link: 'https://github.com/VladChernyak/vue-player/blob/main/CONTRIBUTING.md' },
+          {
+            text: 'Contributing',
+            link: 'https://github.com/VladChernyak/vue-player/blob/main/CONTRIBUTING.md',
+          },
         ],
       },
     ],
@@ -47,9 +48,7 @@ export default defineConfig({
         },
         {
           text: 'Integrations',
-          items: [
-            { text: 'Nuxt', link: '/guide/nuxt' },
-          ],
+          items: [{ text: 'Nuxt', link: '/guide/nuxt' }],
         },
       ],
       '/api/': [
@@ -64,9 +63,7 @@ export default defineConfig({
       ],
     },
 
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/VladChernyak/vue-player' },
-    ],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/VladChernyak/vue-player' }],
 
     footer: {
       message: 'Released under the MIT License.',

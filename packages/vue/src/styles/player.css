@@ -16,6 +16,7 @@
   -webkit-user-select: none;
   outline: none;
   transition: box-shadow var(--vp-transition);
+  container-type: inline-size;
 }
 
 .vp-player:focus-visible {
@@ -978,4 +979,68 @@
 .vp-fade-enter-from,
 .vp-fade-leave-to {
   opacity: 0;
+}
+
+/* ─── Responsive (container-based) ─── */
+
+/* Small player ≤ 500px: hide volume slider, tighten layout, constrain settings menu */
+@container (max-width: 500px) {
+  .vp-subtitle-cue {
+    font-size: 11px;
+    padding: 2px 7px;
+  }
+
+  .vp-subtitles {
+    padding: 0 28px;
+    gap: 2px;
+  }
+  .vp-volume-slider {
+    display: none;
+  }
+
+  .vp-controls {
+    padding: 8px 12px 10px;
+    gap: 1px;
+  }
+
+  .vp-controls-row {
+    gap: 4px;
+  }
+
+  /* Constrain settings body so the menu fits within the player height */
+  .vp-settings-body {
+    max-height: 175px;
+    overflow-y: auto;
+  }
+}
+
+/* Very small player ≤ 380px: hide PiP, tighten further */
+@container (max-width: 380px) {
+  .vp-subtitle-cue {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  .vp-subtitles {
+    padding: 0 16px;
+  }
+  .vp-pip-button {
+    display: none;
+  }
+
+  .vp-controls {
+    padding: 6px 10px 8px;
+  }
+
+  .vp-controls-row {
+    gap: 2px;
+  }
+
+  .vp-time {
+    font-size: 10px;
+  }
+
+  .vp-settings-body {
+    max-height: 110px;
+  }
 }

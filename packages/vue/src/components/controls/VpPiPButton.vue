@@ -8,7 +8,7 @@ defineEmits<{ click: [] }>()
 
 <template>
   <button
-    class="vp-button"
+    class="vp-button vp-pip-button"
     :aria-label="isPiP ? 'Exit Picture-in-Picture' : 'Picture-in-Picture'"
     @click="$emit('click')"
   >

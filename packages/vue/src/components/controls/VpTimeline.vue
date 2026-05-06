@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import type { Chapter } from '@vue-player/core'
+import type { Chapter, ThumbnailCue } from '@vue-player/core'
 import { formatTime } from '@vue-player/core'
 
 const props = defineProps<{
@@ -8,6 +8,7 @@ const props = defineProps<{
   duration: number
   buffered: number
   chapters?: Chapter[]
+  thumbnailCues?: ThumbnailCue[]
 }>()
 
 const emit = defineEmits<{
@@ -140,11 +141,34 @@ const tooltipChapter = computed(() => {
 
 const showTooltip = computed(() => tooltipRatio.value !== null && props.duration > 0)
 
-// Clamp the % so the tooltip doesn't bleed off the track edges.
-// 46px ≈ half the max tooltip width; keeps it fully visible.
+// Active thumbnail for the hovered/seeking position
+const activeThumbnail = computed<ThumbnailCue | null>(() => {
+  const cues = props.thumbnailCues
+  if (!cues?.length) return null
+  const t = tooltipRatio.value
+  if (t === null) return null
+  const time = t * props.duration
+  return cues.find((c) => time >= c.start && time < c.end) ?? null
+})
+
+// Style for sprite-sheet thumbnails (xywh fragment)
+const thumbnailSpriteStyle = computed(() => {
+  const c = activeThumbnail.value
+  if (!c || c.x === undefined) return null
+  return {
+    backgroundImage: `url(${c.url})`,
+    backgroundPosition: `-${c.x}px -${c.y}px`,
+    width: `${c.w}px`,
+    height: `${c.h}px`,
+  }
+})
+
+// Clamp so the tooltip doesn't bleed off the track edges.
+// With thumbnails visible the tooltip is ~160px wide (half ≈ 88px).
 const tooltipStyle = computed(() => {
   const pct = (tooltipRatio.value ?? 0) * 100
-  return { left: `clamp(46px, ${pct}%, calc(100% - 46px))` }
+  const half = activeThumbnail.value ? '88px' : '46px'
+  return { left: `clamp(${half}, ${pct}%, calc(100% - ${half}))` }
 })
 </script>
 
@@ -175,6 +199,14 @@ const tooltipStyle = computed(() => {
     <div v-if="duration > 0" class="vp-timeline-thumb" :style="{ '--progress': progressRatio }" />
 
     <div v-if="showTooltip" class="vp-timeline-tooltip" :style="tooltipStyle">
+      <div v-if="activeThumbnail" class="vp-thumbnail-preview">
+        <div
+          v-if="thumbnailSpriteStyle"
+          class="vp-thumbnail-sprite"
+          :style="thumbnailSpriteStyle"
+        />
+        <img v-else class="vp-thumbnail-img" :src="activeThumbnail.url" draggable="false" />
+      </div>
       <span v-if="tooltipChapter" class="vp-tooltip-chapter">{{ tooltipChapter }}</span>
       {{ formatTime(tooltipTime) }}
     </div>

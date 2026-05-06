@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import type { Chapter, Track, VideoSource } from '@vue-player/core'
-import { isPiPSupported } from '@vue-player/core'
+import type { Chapter, ThumbnailCue, Track, VideoSource } from '@vue-player/core'
+import { isPiPSupported, parseThumbnailVtt } from '@vue-player/core'
 import { usePlayer } from '../../composables/usePlayer'
 import IcoPlay from '../icons/IcoPlay.vue'
 import IcoPause from '../icons/IcoPause.vue'
@@ -31,6 +31,7 @@ interface Props {
   pip?: boolean
   tracks?: Track[]
   chapters?: Chapter[]
+  thumbnails?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -149,6 +150,17 @@ watch(
   (v) => {
     if (v) emit('error', v)
   },
+)
+
+// ─── Thumbnails ───
+const thumbnailCues = ref<ThumbnailCue[]>([])
+
+watch(
+  () => props.thumbnails,
+  async (url) => {
+    thumbnailCues.value = url ? await parseThumbnailVtt(url) : []
+  },
+  { immediate: true },
 )
 
 // ─── Controls visibility ───
@@ -295,6 +307,7 @@ function onKeydown(e: KeyboardEvent) {
         :duration="state.duration"
         :buffered="state.buffered"
         :chapters="chapters"
+        :thumbnail-cues="thumbnailCues.length ? thumbnailCues : undefined"
         @seek="controls.seek"
       />
 

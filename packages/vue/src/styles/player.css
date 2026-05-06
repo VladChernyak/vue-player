@@ -286,6 +286,27 @@
   line-height: 1.3;
 }
 
+.vp-thumbnail-preview {
+  width: 160px;
+  height: 90px;
+  border-radius: calc(var(--vp-radius-xs) - 1px);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--vp-timeline-bg);
+}
+
+.vp-thumbnail-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.vp-thumbnail-sprite {
+  background-repeat: no-repeat;
+}
+
 /* ─── Volume ─── */
 
 .vp-volume {

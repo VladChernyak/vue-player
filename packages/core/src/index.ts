@@ -6,12 +6,14 @@ export type {
   Quality,
   Track,
   Chapter,
+  ThumbnailCue,
 } from './types'
 
 export { detectSourceType } from './utils/source'
 export type { SourceType } from './utils/source'
 
 export { formatTime, parseTimecode } from './utils/time'
+export { parseThumbnailVtt, parseVttText } from './utils/parseThumbnailVtt'
 
 export {
   isFullscreenSupported,

@@ -63,6 +63,7 @@ const active = ref(sources[0])
             :src="active.src"
             :chapters="testChapters"
             :tracks="testTracks"
+            :thumbnails="active.src === sources[0].src ? '/thumbnails.vtt' : undefined"
             :keyboard="true"
             @error="console.error('player error', $event)"
           />

@@ -17,9 +17,8 @@ const emit = defineEmits<{
 const trackRef = ref<HTMLElement | null>(null)
 const isSeeking = ref(false)
 const seekRatio = ref(0)
+const hoverRatio = ref<number | null>(null)
 
-// After releasing the scrubber, hold the target time visually
-// until currentTime catches up (video may be buffering)
 const pendingSeekTime = ref<number | null>(null)
 
 watch(
@@ -43,6 +42,7 @@ const bufferedRatio = computed(() => (props.duration > 0 ? props.buffered / prop
 interface Segment {
   start: number
   end: number
+  label?: string
 }
 
 const segments = computed<Segment[]>(() => {
@@ -52,10 +52,11 @@ const segments = computed<Segment[]>(() => {
   return sorted.map((ch, i) => ({
     start: ch.time / dur,
     end: (sorted[i + 1]?.time ?? dur) / dur,
+    label: ch.label,
   }))
 })
 
-function ratioFromEvent(e: PointerEvent): number {
+function ratioFromEvent(e: { clientX: number }): number {
   const el = trackRef.value
   if (!el) return 0
   const rect = el.getBoundingClientRect()
@@ -90,6 +91,14 @@ function onPointerUp(e: PointerEvent) {
   stopSeeking()
 }
 
+function onMouseMove(e: MouseEvent) {
+  if (!isSeeking.value) hoverRatio.value = ratioFromEvent(e)
+}
+
+function onMouseLeave() {
+  hoverRatio.value = null
+}
+
 onBeforeUnmount(stopSeeking)
 
 function segmentFill(seg: Segment): number {
@@ -106,7 +115,37 @@ function segmentBuffered(seg: Segment): number {
   return ((b - seg.start) / (seg.end - seg.start)) * 100
 }
 
-const thumbPct = computed(() => progressRatio.value * 100)
+// ─── Hovered segment ───
+const hoverSegmentIndex = computed(() => {
+  const r = hoverRatio.value
+  if (r === null) return -1
+  return segments.value.findIndex((s) => r >= s.start && r < s.end)
+})
+
+// ─── Tooltip ───
+const tooltipRatio = computed(() => {
+  if (isSeeking.value) return seekRatio.value
+  return hoverRatio.value
+})
+
+const tooltipTime = computed(() =>
+  tooltipRatio.value !== null ? tooltipRatio.value * props.duration : 0,
+)
+
+const tooltipChapter = computed(() => {
+  const r = tooltipRatio.value
+  if (!props.chapters?.length || r === null) return null
+  return segments.value.find((s) => r >= s.start && r < s.end)?.label ?? null
+})
+
+const showTooltip = computed(() => tooltipRatio.value !== null && props.duration > 0)
+
+// Clamp the % so the tooltip doesn't bleed off the track edges.
+// 46px ≈ half the max tooltip width; keeps it fully visible.
+const tooltipStyle = computed(() => {
+  const pct = (tooltipRatio.value ?? 0) * 100
+  return { left: `clamp(46px, ${pct}%, calc(100% - 46px))` }
+})
 </script>
 
 <template>
@@ -117,19 +156,27 @@ const thumbPct = computed(() => progressRatio.value * 100)
     @pointerdown="onPointerDown"
   >
     <div
-      v-for="(seg, i) in segments"
-      :key="i"
-      class="vp-timeline-segment"
-      :style="{ flex: seg.end - seg.start }"
+      class="vp-timeline-track"
+      @mousemove="onMouseMove"
+      @mouseleave="onMouseLeave"
     >
-      <div class="vp-timeline-buffered" :style="{ width: segmentBuffered(seg) + '%' }" />
-      <div class="vp-timeline-fill" :style="{ width: segmentFill(seg) + '%' }" />
+      <div
+        v-for="(seg, i) in segments"
+        :key="i"
+        class="vp-timeline-segment"
+        :class="{ 'vp-timeline-segment--active': i === hoverSegmentIndex }"
+        :style="{ flex: seg.end - seg.start }"
+      >
+        <div class="vp-timeline-buffered" :style="{ width: segmentBuffered(seg) + '%' }" />
+        <div class="vp-timeline-fill" :style="{ width: segmentFill(seg) + '%' }" />
+      </div>
     </div>
 
-    <div v-if="duration > 0" class="vp-timeline-thumb" :style="{ left: `${thumbPct}%` }" />
+    <div v-if="duration > 0" class="vp-timeline-thumb" :style="{ '--progress': progressRatio }" />
 
-    <div v-if="isSeeking" class="vp-timeline-tooltip" :style="{ left: `${thumbPct}%` }">
-      {{ formatTime(displayTime) }}
+    <div v-if="showTooltip" class="vp-timeline-tooltip" :style="tooltipStyle">
+      <span v-if="tooltipChapter" class="vp-tooltip-chapter">{{ tooltipChapter }}</span>
+      {{ formatTime(tooltipTime) }}
     </div>
   </div>
 </template>

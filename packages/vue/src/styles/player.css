@@ -177,11 +177,17 @@
   height: 20px; /* hit area */
   display: flex;
   align-items: center;
-  gap: var(--vp-timeline-gap);
   cursor: pointer;
   touch-action: none; /* needed for pointer capture on touch */
   padding: 0 calc(var(--vp-thumb-size) / 2); /* prevent thumb clipping */
   box-sizing: border-box;
+}
+
+.vp-timeline-track {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--vp-timeline-gap);
 }
 
 /* Each segment: rounded pill */
@@ -192,12 +198,25 @@
   background: var(--vp-timeline-bg);
   border-radius: var(--vp-timeline-radius);
   overflow: hidden;
-  transition: height var(--vp-transition-fast);
+  transition:
+    height var(--vp-transition-fast),
+    background 0.25s ease;
 }
 
-.vp-timeline:hover .vp-timeline-segment,
+.vp-timeline-track:hover .vp-timeline-segment,
 .vp-timeline--seeking .vp-timeline-segment {
   height: var(--vp-timeline-height-hover);
+}
+
+.vp-timeline-track .vp-timeline-segment:hover {
+  height: calc(var(--vp-timeline-height-hover) + 2px);
+}
+
+.vp-timeline-segment--active {
+  background: rgba(255, 255, 255, 0.18);
+  transition:
+    height var(--vp-transition-fast),
+    background 0.15s ease;
 }
 
 .vp-timeline-buffered,
@@ -230,12 +249,8 @@
   transition:
     box-shadow var(--vp-transition-fast),
     transform var(--vp-transition-fast);
-  /* Keep thumb inside padded area */
-  left: clamp(
-    calc(var(--vp-thumb-size) / 2),
-    var(--thumb-left, 0%),
-    calc(100% - var(--vp-thumb-size) / 2)
-  );
+  /* Mirror segment coordinate system: padding + progress × inner-width */
+  left: calc(var(--vp-thumb-size) / 2 + var(--progress, 0) * (100% - var(--vp-thumb-size)));
 }
 
 .vp-timeline:hover .vp-timeline-thumb,
@@ -244,7 +259,7 @@
   transform: translate(-50%, -50%) scale(1.15);
 }
 
-/* Seek tooltip */
+/* Seek / hover tooltip */
 .vp-timeline-tooltip {
   position: absolute;
   bottom: calc(100% + 10px);
@@ -252,12 +267,23 @@
   background: var(--vp-surface-1);
   border: 1px solid var(--vp-border);
   border-radius: var(--vp-radius-xs);
-  padding: 3px 8px;
+  padding: 4px 8px;
   font-size: var(--vp-font-size-sm);
   color: var(--vp-text-1);
   white-space: nowrap;
   pointer-events: none;
   font-variant-numeric: tabular-nums;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.vp-tooltip-chapter {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--vp-text-2);
+  line-height: 1.3;
 }
 
 /* ─── Volume ─── */
@@ -635,7 +661,6 @@
 }
 
 /* ─── Quality panel ─── */
-
 
 .vp-quality-option {
   display: flex;

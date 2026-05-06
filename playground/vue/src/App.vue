@@ -33,6 +33,14 @@ const sources = [
   },
 ]
 
+const testChapters = [
+  { time: 0, label: 'Intro' },
+  { time: 30, label: 'Act I' },
+  { time: 90, label: 'Act II' },
+  { time: 180, label: 'Act III' },
+  { time: 300, label: 'Finale' },
+]
+
 const active = ref(sources[0])
 </script>
 
@@ -53,6 +61,7 @@ const active = ref(sources[0])
         <div class="player-wrap">
           <VideoPlayer
             :src="active.src"
+            :chapters="testChapters"
             :tracks="testTracks"
             :keyboard="true"
             @error="console.error('player error', $event)"

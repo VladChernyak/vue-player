@@ -1,0 +1,17 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.000
+Welcome to the video.
+
+00:00:03.500 --> 00:00:07.000
+This is a WebVTT subtitle example for an HTML5 player.
+
+00:00:08.000 --> 00:00:12.000
+Subtitles can span
+multiple lines if needed.
+
+00:00:13.000 --> 00:00:17.000 align:start position:0%
+This text is aligned to the left.
+
+00:00:18.000 --> 00:00:22.000
+You can use <b>basic</b> <i>formatting</i> as well.

@@ -12,6 +12,43 @@
     "composable"
   ],
   "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": "./dist/style.css"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub"
+  },
+  "dependencies": {
+    "@vue-player/core": "workspace:*"
+  },
+  "devDependencies": {
+    "hls.js": "^1.5.0"
+  },
+  "peerDependencies": {
+    "hls.js": ">=1.0.0",
+    "vue": ">=3.3.0"
+  },
+  "peerDependenciesMeta": {
+    "hls.js": {
+      "optional": true
+    }
+  },
   "publishConfig": {
     "access": "public"
   },

@@ -4,14 +4,28 @@
   "type": "module",
   "scripts": {
     "build": "pnpm -r --filter='./packages/*' build",
+    "playground": "pnpm --filter @vue-player/playground-vue dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "format": "prettier --write ."
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "unrs-resolver"
+    ]
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.0.0",
     "eslint": "^9.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.3",
     "typescript": "^5.8.0",
     "unbuild": "^3.0.0",
-    "vue": "^3.5.0"
+    "vitest": "^3.0.0",
+    "vue": "^3.5.0",
+    "vue-tsc": "^3.2.7"
   }
 }

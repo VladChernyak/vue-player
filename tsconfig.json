@@ -6,7 +6,8 @@
     "strict": true,
     "skipLibCheck": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "jsx": "preserve"
   },
-  "include": ["packages/*/src"]
+  "include": ["packages/*/src", "playground/*/src"]
 }

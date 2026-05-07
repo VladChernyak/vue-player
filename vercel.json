@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm --filter @vue-player/docs build",
-  "outputDirectory": "docs/.vitepress/dist",
+  "buildCommand": "pnpm build",
+  "outputDirectory": ".vitepress/dist",
   "installCommand": "pnpm install"
 }

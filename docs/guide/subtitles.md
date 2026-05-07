@@ -1,3 +1,8 @@
+---
+title: Subtitles & Captions
+description: Add multilingual WebVTT subtitle and caption tracks with a built-in language switcher.
+---
+
 # Subtitles & Captions
 
 vue-player renders subtitles with a custom overlay — no native browser controls required. Tracks are switched via the subtitles menu in the controls bar.

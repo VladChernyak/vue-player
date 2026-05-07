@@ -1,3 +1,8 @@
+---
+title: Chapters
+description: Add named timeline segments to your player with the chapters prop.
+---
+
 # Chapters
 
 Chapters split the timeline into named segments. Hovering a segment highlights it and shows a tooltip with the chapter name and timestamp.

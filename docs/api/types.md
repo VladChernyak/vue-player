@@ -1,3 +1,8 @@
+---
+title: Types
+description: TypeScript type reference for vue-player — PlayerState, Track, Chapter, ThumbnailCue and more.
+---
+
 # Types
 
 All types are exported from `@vue-player/core`.

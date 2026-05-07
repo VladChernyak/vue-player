@@ -33,7 +33,7 @@
 .VPHero .image-container::before {
   content: '';
   position: absolute;
-  inset: -20%;
+  inset: -16%;
   background: radial-gradient(
     ellipse at center,
     var(--docs-glow-1) 0%,
@@ -42,29 +42,33 @@
   );
   border-radius: 50%;
   z-index: 0;
-  filter: blur(24px);
+  filter: blur(19px);
   pointer-events: none;
+}
+
+html:not(.dark) .VPHero .image-container::before {
+  mix-blend-mode: multiply;
 }
 
 /* Hero SVG: responsive sizing, above the glow layer */
 .VPHero .image-container > svg {
   position: relative;
   z-index: 1;
-  width: 160px;
-  height: 160px;
+  width: 184px;
+  height: 184px;
 }
 
 @media (min-width: 640px) {
   .VPHero .image-container > svg {
-    width: 220px;
-    height: 220px;
+    width: 253px;
+    height: 253px;
   }
 }
 
 @media (min-width: 960px) {
   .VPHero .image-container > svg {
-    width: 260px;
-    height: 260px;
+    width: 299px;
+    height: 299px;
   }
 }
 

@@ -1,3 +1,8 @@
+---
+title: Installation
+description: Install vue-player with npm, pnpm or yarn and import styles into your Vue 3 project.
+---
+
 # Installation
 
 ## Package Manager

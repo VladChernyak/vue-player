@@ -1,3 +1,8 @@
+---
+title: Nuxt Integration
+description: Set up the official @vue-player/nuxt module for automatic component and composable imports.
+---
+
 # Nuxt Integration
 
 `@vue-player/nuxt` is an official Nuxt 3 module that auto-imports `VideoPlayer` and `usePlayer` across your entire app — no manual imports needed.

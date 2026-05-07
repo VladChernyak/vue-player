@@ -1,9 +1,17 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 
+const SITE_URL = 'https://vue-player.vercel.app'
+const DESCRIPTION = 'Feature-rich Vue 3 video player with HLS, chapters, subtitles and more.'
+
 export default defineConfig({
-  title: 'vue-player',
-  description: 'Feature-rich Vue 3 video player with HLS, chapters, subtitles and more.',
+  title: 'Vue Player',
+  description: DESCRIPTION,
+  titleTemplate: ':title | Vue Player',
+
+  sitemap: {
+    hostname: SITE_URL,
+  },
 
   vite: {
     resolve: {
@@ -24,7 +32,23 @@ export default defineConfig({
     },
   },
 
-  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }]],
+  head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
+
+    // Open Graph
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:site_name', content: 'vue-player' }],
+    ['meta', { property: 'og:title', content: 'vue-player' }],
+    ['meta', { property: 'og:description', content: DESCRIPTION }],
+    ['meta', { property: 'og:image', content: `${SITE_URL}/og-image.png` }],
+    ['meta', { property: 'og:url', content: SITE_URL }],
+
+    // Twitter / X
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:title', content: 'vue-player' }],
+    ['meta', { name: 'twitter:description', content: DESCRIPTION }],
+    ['meta', { name: 'twitter:image', content: `${SITE_URL}/og-image.png` }],
+  ],
 
   themeConfig: {
     logo: '/logo.svg',

@@ -1,3 +1,8 @@
+---
+title: Keyboard Shortcuts
+description: Complete keyboard shortcut reference for vue-player — play, seek, volume, fullscreen and PiP.
+---
+
 # Keyboard Shortcuts
 
 vue-player supports keyboard control when the player element is focused. Click the player or press Tab to focus it.

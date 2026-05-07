@@ -1,3 +1,8 @@
+---
+title: Introduction
+description: Learn what vue-player is, its features, browser support and the available packages.
+---
+
 # Introduction
 
 **vue-player** is a headless-styled video player component for Vue 3. It wraps the native `<video>` element with a polished UI, adaptive streaming support, and a composable API — all without any mandatory peer dependencies beyond Vue itself.

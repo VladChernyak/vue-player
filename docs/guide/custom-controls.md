@@ -1,3 +1,8 @@
+---
+title: Custom Controls
+description: Replace the default controls with your own UI using the controls slot and full access to state and player API.
+---
+
 # Custom Controls
 
 The `controls` slot lets you replace the entire controls row with your own UI while keeping the player's state and logic intact.

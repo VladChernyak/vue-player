@@ -1,3 +1,8 @@
+---
+title: Theming
+description: Customize every visual detail of vue-player using CSS custom properties — no build step needed.
+---
+
 # Theming
 
 vue-player exposes all visual properties as CSS custom properties. Override them on `.vp-player` or any parent element — no build step required.

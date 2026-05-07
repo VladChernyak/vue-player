@@ -1,3 +1,8 @@
+---
+title: Quick Start
+description: Get started with vue-player — from a basic video to HLS streaming in minutes.
+---
+
 # Quick Start
 
 ## Basic Usage

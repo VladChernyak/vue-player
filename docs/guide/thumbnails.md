@@ -1,3 +1,8 @@
+---
+title: Thumbnail Previews
+description: Show timeline thumbnail previews from a WebVTT sprite sheet. Compatible with standard ffmpeg workflows.
+---
+
 # Thumbnail Previews
 
 Hovering the timeline shows a thumbnail preview from the video. vue-player reads a [WebVTT](https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API) file that maps time ranges to image frames — either individual images or a sprite sheet.

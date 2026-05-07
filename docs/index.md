@@ -1,5 +1,8 @@
 ---
 layout: home
+title: Vue Player — Vue 3 Video Player
+titleTemplate: false
+description: Feature-rich Vue 3 video player with HLS adaptive streaming, chapters, subtitles, thumbnail previews and Picture-in-Picture — out of the box.
 
 hero:
   name: 'Vue Player'

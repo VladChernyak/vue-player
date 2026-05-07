@@ -1,3 +1,8 @@
+---
+title: VideoPlayer
+description: VideoPlayer component API — props, events and slots reference.
+---
+
 # VideoPlayer
 
 The main component. Wraps `<video>` with controls, overlays, and adaptive streaming support.

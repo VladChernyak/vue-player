@@ -1,3 +1,8 @@
+---
+title: usePlayer
+description: usePlayer composable API — state, controls and loadSource reference.
+---
+
 # usePlayer
 
 Low-level composable that powers `VideoPlayer` internally. Use it when you need direct access to player state and controls — for example, to build a fully custom UI.

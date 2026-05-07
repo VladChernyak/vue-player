@@ -5,6 +5,9 @@
   "scripts": {
     "build": "pnpm -r --filter='./packages/*' build",
     "playground": "pnpm --filter @vue-player/playground-vue dev",
+    "docs:dev": "pnpm --filter @vue-player/docs dev",
+    "docs:build": "pnpm --filter @vue-player/docs build",
+    "docs:preview": "pnpm --filter @vue-player/docs preview",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",

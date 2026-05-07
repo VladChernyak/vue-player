@@ -1,6 +1,6 @@
 {
   "name": "@vue-player/core",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Core logic for vue-player — framework-agnostic video player engine",
   "keywords": [
     "vue",

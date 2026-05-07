@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { Chapter, ThumbnailCue, Track, VideoSource } from '@vue-player/core'
 import { isPiPSupported, parseThumbnailVtt } from '@vue-player/core'
 import { usePlayer } from '../../composables/usePlayer'
@@ -63,6 +63,9 @@ const videoRef = ref<HTMLVideoElement | null>(null)
 const { state, controls, loadSource } = usePlayer(videoRef)
 
 const pipSupported = ref(false)
+
+// Poster is visible until playback starts for the first time
+const showPoster = computed(() => !!props.poster && !state.isPlaying && state.currentTime === 0)
 
 // ─── Custom subtitle rendering ───
 const currentCues = ref<string[]>([])
@@ -171,12 +174,12 @@ function showControls() {
   controlsVisible.value = true
   if (hideTimer) clearTimeout(hideTimer)
   hideTimer = setTimeout(() => {
-    if (state.isPlaying) controlsVisible.value = false
+    if (state.isPlaying && !showPoster.value) controlsVisible.value = false
   }, 3000)
 }
 
 function onMouseLeave() {
-  if (state.isPlaying) controlsVisible.value = false
+  if (state.isPlaying && !showPoster.value) controlsVisible.value = false
 }
 
 // ─── Play/pause flash indicator ───
@@ -255,7 +258,6 @@ function onKeydown(e: KeyboardEvent) {
   >
     <video
       ref="videoRef"
-      :poster="poster"
       :loop="loop"
       :muted="muted"
       :autoplay="autoplay"
@@ -271,6 +273,15 @@ function onKeydown(e: KeyboardEvent) {
         :kind="track.kind ?? 'subtitles'"
       />
     </video>
+
+    <!-- Poster overlay: cover-fit, fades out once playback starts -->
+    <Transition name="vp-poster">
+      <div
+        v-if="showPoster"
+        class="vp-poster"
+        :style="{ backgroundImage: `url(${props.poster})` }"
+      />
+    </Transition>
 
     <!-- Custom subtitle overlay — positioned above controls bar -->
     <div v-if="currentCues.length > 0" class="vp-subtitles" aria-live="polite">

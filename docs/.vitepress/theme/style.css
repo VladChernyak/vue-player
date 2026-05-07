@@ -1,0 +1,97 @@
+/* ─── Brand colours (default green — overridden at runtime by ThemeSwitcher) ─── */
+:root {
+  --vp-c-brand-1: #3dd68c;
+  --vp-c-brand-2: #2ec97a;
+  --vp-c-brand-3: #24b86e;
+  --vp-c-brand-soft: rgba(61, 214, 140, 0.14);
+  --vp-primary: #3dd68c;
+
+  /* Extra docs-specific tokens set by ThemeSwitcher alongside the VitePress ones */
+  --docs-gradient-end: #22d3ee;
+  --docs-glow-1: rgba(61, 214, 140, 0.35);
+  --docs-glow-2: rgba(34, 211, 238, 0.15);
+  --docs-icon-glow: rgba(61, 214, 140, 0.5);
+  --docs-logo-hue: 0deg;
+}
+
+/* ─── Hero: gradient name "Vue Player" ─── */
+.VPHero .name .clip {
+  background: linear-gradient(120deg, var(--vp-c-brand-1) 0%, var(--docs-gradient-end) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Hero: logo container ─── */
+.VPHero .image-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.VPHero .image-container::before {
+  content: '';
+  position: absolute;
+  inset: -16%;
+  background: radial-gradient(
+    ellipse at center,
+    var(--docs-glow-1) 0%,
+    var(--docs-glow-2) 45%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  z-index: 0;
+  filter: blur(19px);
+  pointer-events: none;
+}
+
+html:not(.dark) .VPHero .image-container::before {
+  mix-blend-mode: multiply;
+}
+
+/* Hero SVG: responsive sizing, above the glow layer */
+.VPHero .image-container > svg {
+  position: relative;
+  z-index: 1;
+  width: 184px;
+  height: 184px;
+}
+
+@media (min-width: 640px) {
+  .VPHero .image-container > svg {
+    width: 253px;
+    height: 253px;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHero .image-container > svg {
+    width: 299px;
+    height: 299px;
+  }
+}
+
+.VPHero .image-bg {
+  display: none;
+}
+
+.VPHero .image-container .image-src {
+  display: none; /* replaced by LogoIcon component via home-hero-image slot */
+}
+
+/* Hide default navbar logo img — replaced by LogoIcon via nav-bar-title-before slot */
+.VPNavBarTitle .logo {
+  display: none;
+}
+
+/* Small spacing between injected logo and site title text */
+.VPNavBarTitle a {
+  gap: 6px;
+}
+
+/* ─── Features: hover glow on icon ─── */
+.VPFeature:hover .icon {
+  filter: drop-shadow(0 0 8px var(--docs-icon-glow));
+  transition: filter 0.25s ease;
+}

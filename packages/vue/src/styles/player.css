@@ -308,6 +308,7 @@
 .vp-thumbnail-preview {
   width: 160px;
   height: 90px;
+  margin-bottom: 2px;
   border-radius: calc(var(--vp-radius-xs) - 1px);
   overflow: hidden;
   flex-shrink: 0;

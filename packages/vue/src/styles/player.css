@@ -28,7 +28,7 @@
   border-radius: 0;
 }
 
-.vp-icon {
+.vp-svg-icon {
   width: var(--vp-icon-size);
   height: var(--vp-icon-size);
   flex-shrink: 0;
@@ -39,6 +39,15 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.vp-poster {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
 }
 
 .vp-video-click-area {
@@ -54,6 +63,7 @@
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 2;
   padding: var(--vp-controls-padding);
   background: var(--vp-controls-bg);
   display: flex;
@@ -941,7 +951,7 @@
   animation: vp-flash-in 0.65s ease forwards;
 }
 
-.vp-play-flash-circle .vp-icon {
+.vp-play-flash-circle .vp-svg-icon {
   width: 32px;
   height: 32px;
   color: #fff;

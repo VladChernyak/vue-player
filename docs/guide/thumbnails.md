@@ -102,12 +102,12 @@ Each returned cue has the following shape:
 
 ```ts
 interface ThumbnailCue {
-  start: number   // cue start time in seconds
-  end: number     // cue end time in seconds
-  url: string     // absolute image URL
-  x?: number      // sprite x offset (px)
-  y?: number      // sprite y offset (px)
-  w?: number      // sprite frame width (px)
-  h?: number      // sprite frame height (px)
+  start: number // cue start time in seconds
+  end: number // cue end time in seconds
+  url: string // absolute image URL
+  x?: number // sprite x offset (px)
+  y?: number // sprite y offset (px)
+  w?: number // sprite frame width (px)
+  h?: number // sprite frame height (px)
 }
 ```

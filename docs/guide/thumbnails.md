@@ -72,10 +72,11 @@ Then generate the VTT manually or with a script.
 ### Sprite sheet
 
 ```sh
-# 1. Extract frames at 1 fps, scale to 160×90
+mkdir -p thumbnails
 ffmpeg -i video.mp4 \
   -vf "fps=1/5,scale=160:90,tile=10x10" \
   -frames:v 1 \
+  -update 1 \
   -q:v 5 \
   thumbnails/sprite.jpg
 ```

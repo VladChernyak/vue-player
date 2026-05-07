@@ -24,7 +24,12 @@ const chapters: Chapter[] = [
       </p>
       <div class="home-demo-player">
         <ClientOnly>
-          <VideoPlayer :src="src" :poster="poster" :chapters="chapters" />
+          <VideoPlayer
+            :src="src"
+            :poster="poster"
+            :chapters="chapters"
+            thumbnails="/demo-thumbs.vtt"
+          />
           <template #fallback>
             <div class="home-demo-placeholder">
               <span class="home-demo-icon">▶</span>

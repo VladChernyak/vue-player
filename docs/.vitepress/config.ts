@@ -1,8 +1,28 @@
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'vue-player',
   description: 'Feature-rich Vue 3 video player with HLS, chapters, subtitles and more.',
+
+  vite: {
+    resolve: {
+      alias: [
+        {
+          find: '@vue-player/vue/styles',
+          replacement: fileURLToPath(new URL('../../packages/vue/src/styles/index.css', import.meta.url)),
+        },
+        {
+          find: '@vue-player/vue',
+          replacement: fileURLToPath(new URL('../../packages/vue/src/index.ts', import.meta.url)),
+        },
+        {
+          find: '@vue-player/core',
+          replacement: fileURLToPath(new URL('../../packages/core/src/index.ts', import.meta.url)),
+        },
+      ],
+    },
+  },
 
   head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }]],
 

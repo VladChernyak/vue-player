@@ -1,16 +1,36 @@
+<script setup lang="ts">
+import { VideoPlayer } from '@vue-player/vue'
+import type { Chapter } from '@vue-player/core'
+
+const src = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'
+const poster = '/demo-poster.webp'
+
+const chapters: Chapter[] = [
+  { time: 0, label: 'Opening' },
+  { time: 56, label: 'The Squirrels Appear' },
+  { time: 164, label: 'First Prank' },
+  { time: 268, label: 'Buck Gives Chase' },
+  { time: 390, label: 'Retaliation' },
+  { time: 492, label: "Buck's Revenge" },
+]
+</script>
+
 <template>
   <section class="home-demo">
     <div class="home-demo-inner">
       <h2 class="home-demo-title">See it in action</h2>
       <p class="home-demo-sub">
-        Chapters, subtitles, thumbnail previews, quality switching and Picture-in-Picture — all
-        live.
+        HLS adaptive streaming, chapters, quality switching and Picture-in-Picture — all live.
       </p>
       <div class="home-demo-player">
-        <div class="home-demo-placeholder">
-          <span class="home-demo-icon">▶</span>
-          <span class="home-demo-label">Live demo coming soon</span>
-        </div>
+        <ClientOnly>
+          <VideoPlayer :src="src" :poster="poster" :chapters="chapters" />
+          <template #fallback>
+            <div class="home-demo-placeholder">
+              <span class="home-demo-icon">▶</span>
+            </div>
+          </template>
+        </ClientOnly>
       </div>
     </div>
   </section>
@@ -18,6 +38,7 @@
 
 <style scoped>
 .home-demo {
+  margin-top: 48px;
   padding: 80px 24px;
   border-top: 1px solid var(--vp-c-divider);
 }
@@ -37,7 +58,11 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  background: linear-gradient(120deg, var(--vp-c-brand-1) 0%, var(--docs-gradient-end, #22d3ee) 100%);
+  background: linear-gradient(
+    120deg,
+    var(--vp-c-brand-1) 0%,
+    var(--docs-gradient-end, #22d3ee) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -52,7 +77,6 @@
 
 .home-demo-player {
   width: 100%;
-  aspect-ratio: 16 / 9;
   margin-top: 16px;
   border-radius: 16px;
   overflow: hidden;
@@ -63,23 +87,15 @@
 
 .home-demo-placeholder {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 9;
   background: var(--vp-c-bg-soft);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
 }
 
 .home-demo-icon {
   font-size: 40px;
   opacity: 0.2;
-}
-
-.home-demo-label {
-  font-size: 14px;
-  color: var(--vp-c-text-3);
-  letter-spacing: 0.02em;
 }
 </style>

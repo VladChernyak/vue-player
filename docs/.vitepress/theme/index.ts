@@ -4,6 +4,7 @@ import HomeDemo from './components/HomeDemo.vue'
 import LogoIcon from './components/LogoIcon.vue'
 import ThemeSwitcher from './components/ThemeSwitcher.vue'
 import './style.css'
+import '@vue-player/vue/styles'
 
 export default {
   extends: DefaultTheme,

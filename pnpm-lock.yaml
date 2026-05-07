@@ -37,6 +37,10 @@ importers:
         version: 3.2.7(typescript@5.9.3)
 
   docs:
+    dependencies:
+      '@vue-player/vue':
+        specifier: workspace:*
+        version: link:../packages/vue
     devDependencies:
       vitepress:
         specifier: ^1.6.3

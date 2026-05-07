@@ -8,6 +8,9 @@
     "build": "vitepress build",
     "preview": "vitepress preview"
   },
+  "dependencies": {
+    "@vue-player/vue": "workspace:*"
+  },
   "devDependencies": {
     "vitepress": "^1.6.3"
   }

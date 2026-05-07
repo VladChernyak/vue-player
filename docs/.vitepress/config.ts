@@ -58,7 +58,7 @@ export default defineConfig({
       { text: 'Guide', link: '/guide/introduction' },
       { text: 'API', link: '/api/video-player' },
       {
-        text: '0.0.1',
+        text: '0.1.0',
         items: [
           { text: 'Changelog', link: 'https://github.com/VladChernyak/vue-player/releases' },
           {

@@ -274,12 +274,14 @@ function onKeydown(e: KeyboardEvent) {
       />
     </video>
 
-    <!-- Poster overlay: cover-fit, disappears once playback starts -->
-    <div
-      v-if="showPoster"
-      class="vp-poster"
-      :style="{ backgroundImage: `url(${props.poster})` }"
-    />
+    <!-- Poster overlay: cover-fit, fades out once playback starts -->
+    <Transition name="vp-poster">
+      <div
+        v-if="showPoster"
+        class="vp-poster"
+        :style="{ backgroundImage: `url(${props.poster})` }"
+      />
+    </Transition>
 
     <!-- Custom subtitle overlay — positioned above controls bar -->
     <div v-if="currentCues.length > 0" class="vp-subtitles" aria-live="polite">

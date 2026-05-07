@@ -50,6 +50,14 @@
   pointer-events: none;
 }
 
+.vp-poster-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.vp-poster-leave-to {
+  opacity: 0;
+}
+
 .vp-video-click-area {
   position: absolute;
   inset: 0;

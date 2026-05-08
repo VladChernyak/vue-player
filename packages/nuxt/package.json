@@ -1,17 +1,24 @@
 {
   "name": "@vue-player/nuxt",
   "version": "0.1.0",
-  "description": "Nuxt module for vue-player — auto-imports VideoPlayer component and styles",
+  "description": "Official Nuxt 3 module for vue-player — auto-imports VideoPlayer and usePlayer",
   "keywords": [
     "nuxt",
     "nuxt3",
-    "nuxt4",
+    "nuxt-module",
     "vue",
+    "vue3",
     "video",
+    "video-player",
     "player",
-    "module"
+    "hls",
+    "typescript"
   ],
   "license": "MIT",
+  "homepage": "https://vue-player.vercel.app/guide/nuxt",
+  "bugs": {
+    "url": "https://github.com/VladChernyak/vue-player/issues"
+  },
   "type": "module",
   "exports": {
     ".": {

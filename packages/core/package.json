@@ -1,15 +1,22 @@
 {
   "name": "@vue-player/core",
   "version": "0.1.0",
-  "description": "Core logic for vue-player — framework-agnostic video player engine",
+  "description": "Framework-agnostic video player engine powering @vue-player/vue",
   "keywords": [
     "vue",
+    "vue3",
     "video",
     "player",
     "hls",
-    "dash"
+    "hls.js",
+    "adaptive-streaming",
+    "typescript"
   ],
   "license": "MIT",
+  "homepage": "https://vue-player.vercel.app",
+  "bugs": {
+    "url": "https://github.com/VladChernyak/vue-player/issues"
+  },
   "type": "module",
   "sideEffects": false,
   "exports": {

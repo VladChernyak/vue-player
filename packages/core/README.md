@@ -1,12 +1,31 @@
 # @vue-player/core
 
-> 🚧 This package is under active development. Stay tuned.
+Framework-agnostic player engine and TypeScript types for [vue-player](https://vue-player.vercel.app).
 
-Core logic for [vue-player](https://github.com/VladChernyak/vue-player) —
-a modern Vue 3 video player with HLS, DASH, subtitles, chapters and more.
+[![npm](https://img.shields.io/npm/v/@vue-player/core?color=3dd68c&label=npm)](https://www.npmjs.com/package/@vue-player/core)
+[![license](https://img.shields.io/github/license/VladChernyak/vue-player?color=3dd68c)](https://github.com/VladChernyak/vue-player/blob/main/LICENSE)
 
-## Packages
+This package is the internal engine used by `@vue-player/vue`. You do not need to install it directly — it is a peer dependency and is installed automatically.
 
-- [`@vue-player/core`](../core) — framework-agnostic engine
-- [`@vue-player/vue`](../vue) — Vue 3 components & composables
-- [`@vue-player/nuxt`](../nuxt) — Nuxt 4 module
+If you are building a Vue 3 player, install [`@vue-player/vue`](https://www.npmjs.com/package/@vue-player/vue) instead.
+
+## Types
+
+Types are re-exported from `@vue-player/vue` for convenience, but can also be imported directly:
+
+```ts
+import type {
+  PlayerState,
+  PlayerControls,
+  Track,
+  Chapter,
+  ThumbnailCue,
+  VideoSource,
+  Quality,
+  PlayerError,
+} from '@vue-player/core'
+```
+
+## License
+
+[MIT](https://github.com/VladChernyak/vue-player/blob/main/LICENSE)

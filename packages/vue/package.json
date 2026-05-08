@@ -1,17 +1,27 @@
 {
   "name": "@vue-player/vue",
   "version": "0.1.0",
-  "description": "Vue 3 video player component library",
+  "description": "Feature-rich Vue 3 video player with HLS streaming, subtitles, chapters and thumbnail previews",
   "keywords": [
     "vue",
     "vue3",
     "video",
+    "video-player",
     "player",
     "hls",
-    "dash",
-    "composable"
+    "hls.js",
+    "adaptive-streaming",
+    "subtitles",
+    "chapters",
+    "thumbnails",
+    "composable",
+    "typescript"
   ],
   "license": "MIT",
+  "homepage": "https://vue-player.vercel.app",
+  "bugs": {
+    "url": "https://github.com/VladChernyak/vue-player/issues"
+  },
   "type": "module",
   "sideEffects": [
     "*.css"

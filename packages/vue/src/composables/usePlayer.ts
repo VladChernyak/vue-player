@@ -1,6 +1,12 @@
 import { onMounted, onUnmounted, reactive, readonly } from 'vue'
 import type { Ref } from 'vue'
-import { createNativeAdapter, detectSourceType } from '@vue-player/core'
+import {
+  createNativeAdapter,
+  detectSourceType,
+  enterFullscreen,
+  exitFullscreen,
+  getFullscreenElement,
+} from '@vue-player/core'
 import type { PlayerState, PlayerError, Track } from '@vue-player/core'
 
 export interface PlayerControls {
@@ -206,7 +212,10 @@ export function usePlayer(videoRef: Ref<HTMLVideoElement | null>) {
       syncFromVideo(video)
     })
     video.addEventListener('play', () => syncFromVideo(video))
-    video.addEventListener('pause', () => syncFromVideo(video))
+    video.addEventListener('pause', () => {
+      state.isBuffering = false
+      syncFromVideo(video)
+    })
     video.addEventListener('ended', () => syncFromVideo(video))
     video.addEventListener('timeupdate', () => syncFromVideo(video))
     video.addEventListener('volumechange', () => syncFromVideo(video))
@@ -284,10 +293,18 @@ export function usePlayer(videoRef: Ref<HTMLVideoElement | null>) {
       if (video) applyTrackModes(video)
     },
     async toggleFullscreen() {
-      const el = videoRef.value?.closest<HTMLElement>('.vp-player')
+      const video = videoRef.value
+      const el = video?.closest<HTMLElement>('.vp-player')
       if (!el) return
-      if (document.fullscreenElement) await document.exitFullscreen()
-      else await el.requestFullscreen()
+      if (getFullscreenElement()) {
+        await exitFullscreen()
+      } else if ('requestFullscreen' in el || 'webkitRequestFullscreen' in el) {
+        await enterFullscreen(el)
+      } else {
+        // iOS Safari: only supports fullscreen on the video element itself
+        const iosVideo = video as HTMLVideoElement & { webkitEnterFullscreen?: () => void }
+        iosVideo.webkitEnterFullscreen?.()
+      }
     },
     async togglePiP() {
       const video = videoRef.value

@@ -256,32 +256,37 @@ function onKeydown(e: KeyboardEvent) {
     @mouseleave="onMouseLeave"
     @keydown="onKeydown"
   >
-    <video
-      ref="videoRef"
-      :loop="loop"
-      :muted="muted"
-      :autoplay="autoplay"
-      preload="metadata"
-      crossorigin="anonymous"
-    >
-      <track
-        v-for="track in tracks"
-        :key="track.src"
-        :src="track.src"
-        :label="track.label"
-        :srclang="track.language"
-        :kind="track.kind ?? 'subtitles'"
-      />
-    </video>
+    <!-- Video area: clipped to border-radius, isolated from menu/tooltip overflow -->
+    <div class="vp-video-area">
+      <video
+        ref="videoRef"
+        :loop="loop"
+        :muted="muted"
+        :autoplay="autoplay"
+        preload="metadata"
+        crossorigin="anonymous"
+        playsinline
+        webkit-playsinline
+      >
+        <track
+          v-for="track in tracks"
+          :key="track.src"
+          :src="track.src"
+          :label="track.label"
+          :srclang="track.language"
+          :kind="track.kind ?? 'subtitles'"
+        />
+      </video>
 
-    <!-- Poster overlay: cover-fit, fades out once playback starts -->
-    <Transition name="vp-poster">
-      <div
-        v-if="showPoster"
-        class="vp-poster"
-        :style="{ backgroundImage: `url(${props.poster})` }"
-      />
-    </Transition>
+      <!-- Poster overlay: cover-fit, fades out once playback starts -->
+      <Transition name="vp-poster">
+        <div
+          v-if="showPoster"
+          class="vp-poster"
+          :style="{ backgroundImage: `url(${props.poster})` }"
+        />
+      </Transition>
+    </div>
 
     <!-- Custom subtitle overlay — positioned above controls bar -->
     <div v-if="currentCues.length > 0" class="vp-subtitles" aria-live="polite">
@@ -360,6 +365,7 @@ function onKeydown(e: KeyboardEvent) {
             :playback-rates="playbackRates"
             :available-qualities="state.availableQualities"
             :current-quality="state.currentQuality"
+            :is-fullscreen="state.isFullscreen"
             @set-speed="controls.setSpeed"
             @set-quality="controls.setQuality"
           />

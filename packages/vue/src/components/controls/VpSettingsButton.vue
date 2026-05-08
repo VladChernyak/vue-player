@@ -15,6 +15,7 @@ const props = defineProps<{
   playbackRates: number[]
   availableQualities: ReadonlyArray<Quality>
   currentQuality: number | 'auto'
+  isFullscreen?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -28,7 +29,23 @@ const isOpen = ref(false)
 const activePanel = ref<'main' | 'speed' | 'quality'>('main')
 const slideDir = ref<'fwd' | 'bck'>('fwd')
 const wrapRef = ref<HTMLElement | null>(null)
+const btnRef = ref<HTMLElement | null>(null)
 const bodyRef = ref<HTMLElement | null>(null)
+const menuStyle = ref({ bottom: '0px', right: '0px' })
+
+function updateMenuPosition() {
+  const btn = btnRef.value
+  if (!btn) return
+  const rect = btn.getBoundingClientRect()
+  menuStyle.value = {
+    bottom: `${window.innerHeight - rect.top + 8}px`,
+    right: `${window.innerWidth - rect.right}px`,
+  }
+}
+
+watch(isOpen, (open) => {
+  if (open) updateMenuPosition()
+})
 
 // Visual-only rate for smooth slider animation on badge click
 const visualRate = ref(props.playbackRate)
@@ -142,6 +159,7 @@ onBeforeUnmount(() => {
 <template>
   <div ref="wrapRef" class="vp-menu-wrap" @keydown.escape="close">
     <button
+      ref="btnRef"
       class="vp-button"
       aria-label="Settings"
       :class="{ 'vp-menu-open': isOpen }"
@@ -150,8 +168,14 @@ onBeforeUnmount(() => {
       <IcoSettings class="vp-settings-icon" :class="{ 'vp-settings-icon--open': isOpen }" />
     </button>
 
+    <Teleport to="body" :disabled="props.isFullscreen">
     <Transition name="vp-popup">
-      <div v-if="isOpen" class="vp-menu vp-settings-menu" @click.stop>
+      <div
+        v-if="isOpen"
+        class="vp-menu vp-settings-menu"
+        :style="props.isFullscreen ? undefined : { position: 'fixed', bottom: menuStyle.bottom, right: menuStyle.right }"
+        @click.stop
+      >
         <div ref="bodyRef" class="vp-settings-body">
           <Transition :name="`vp-slide-${slideDir}`">
             <!-- Main panel -->
@@ -258,5 +282,6 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </Transition>
+    </Teleport>
   </div>
 </template>

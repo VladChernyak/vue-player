@@ -6,4 +6,5 @@ dist
 .nuxt
 .output
 .cache
+docs/.vitepress/cache
 *.local

@@ -111,7 +111,7 @@ export default defineConfig({
 
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2025-present Vladyslav Chernyak',
+      copyright: 'Copyright © 2026-present Vladyslav Chernyak',
     },
 
     search: {

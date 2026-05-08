@@ -5,11 +5,11 @@ Feature-rich Vue 3 video player with HLS adaptive streaming, chapters, subtitles
 [![npm](https://img.shields.io/npm/v/@vue-player/vue?color=3dd68c&label=npm)](https://www.npmjs.com/package/@vue-player/vue)
 [![license](https://img.shields.io/github/license/VladChernyak/vue-player?color=3dd68c)](https://github.com/VladChernyak/vue-player/blob/main/LICENSE)
 
-**[Documentation](https://vue-player.vercel.app)** · [Quick Start](https://vue-player.vercel.app/guide/quick-start) · [API Reference](https://vue-player.vercel.app/api/video-player)
+**[Documentation](https://vue-player.vercel.app)** · [Quick Start](https://vue-player.vercel.app/guide/quick-start.html) · [API Reference](https://vue-player.vercel.app/api/video-player.html)
 
 ## Features
 
-- HLS adaptive streaming via `hls.js`
+- HLS adaptive streaming via `hls.js` (optional)
 - Subtitles and captions (WebVTT)
 - Chapter markers on the timeline
 - Thumbnail preview scrubbing
@@ -22,7 +22,13 @@ Feature-rich Vue 3 video player with HLS adaptive streaming, chapters, subtitles
 ## Installation
 
 ```sh
-npm install @vue-player/vue hls.js
+npm install @vue-player/vue
+```
+
+For HLS adaptive streaming, also install `hls.js`:
+
+```sh
+npm install hls.js
 ```
 
 Import styles once in your app entry:
@@ -44,6 +50,8 @@ import { VideoPlayer } from '@vue-player/vue'
 ```
 
 ## HLS Streaming
+
+Pass an `.m3u8` URL — source type is detected automatically:
 
 ```vue
 <template>
@@ -100,6 +108,7 @@ onMounted(() => loadSource('https://example.com/video.mp4'))
   <button @click="state.isPlaying ? controls.pause() : controls.play()">
     {{ state.isPlaying ? 'Pause' : 'Play' }}
   </button>
+  <span>{{ state.currentTime.toFixed(1) }} / {{ state.duration.toFixed(1) }}</span>
 </template>
 ```
 

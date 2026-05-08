@@ -5,7 +5,7 @@ Official Nuxt 3 module for [vue-player](https://vue-player.vercel.app) — auto-
 [![npm](https://img.shields.io/npm/v/@vue-player/nuxt?color=3dd68c&label=npm)](https://www.npmjs.com/package/@vue-player/nuxt)
 [![license](https://img.shields.io/github/license/VladChernyak/vue-player?color=3dd68c)](https://github.com/VladChernyak/vue-player/blob/main/LICENSE)
 
-**[Documentation](https://vue-player.vercel.app/guide/nuxt)**
+**[Documentation](https://vue-player.vercel.app/guide/nuxt.html)**
 
 ## Installation
 
@@ -45,7 +45,7 @@ export default defineNuxtConfig({
   modules: ['@vue-player/nuxt'],
 
   vuePlayer: {
-    prefix: 'Vp', // <VpVideoPlayer>, useVpPlayer()
+    prefix: 'Vp', // component becomes <VpVideoPlayer>, composable becomes useVpPlayer()
   },
 })
 ```

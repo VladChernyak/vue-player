@@ -18,9 +18,9 @@
   ],
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     },
     "./styles": "./dist/style.css"
   },
@@ -31,14 +31,17 @@
     "dist"
   ],
   "scripts": {
-    "build": "unbuild",
+    "build": "vite build",
     "dev": "unbuild --stub"
   },
   "dependencies": {
     "@vue-player/core": "workspace:*"
   },
   "devDependencies": {
-    "hls.js": "^1.5.0"
+    "@vitejs/plugin-vue": "^5.2.4",
+    "hls.js": "^1.5.0",
+    "vite": "^6.4.2",
+    "vite-plugin-dts": "^5.0.0"
   },
   "peerDependencies": {
     "hls.js": ">=1.0.0",

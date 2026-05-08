@@ -82,6 +82,8 @@
   z-index: 2;
   padding: var(--vp-controls-padding);
   background: var(--vp-controls-bg);
+  border-bottom-left-radius: var(--vp-radius);
+  border-bottom-right-radius: var(--vp-radius);
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -184,6 +186,17 @@
 .vp-button[aria-label]:not(.vp-menu-open):hover::after {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* Last button in the controls row (fullscreen): right-align tooltip to avoid right-edge clipping */
+.vp-controls-row > .vp-button:last-child[aria-label]::after {
+  left: auto;
+  right: 0;
+  transform: translateY(4px);
+}
+
+.vp-controls-row > .vp-button:last-child[aria-label]:not(.vp-menu-open):hover::after {
+  transform: translateY(0);
 }
 
 .vp-speed-button {

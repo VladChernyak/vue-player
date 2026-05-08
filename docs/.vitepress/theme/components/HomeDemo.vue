@@ -46,6 +46,7 @@ const chapters: Chapter[] = [
   margin-top: 48px;
   padding: 80px 24px;
   border-top: 1px solid var(--vp-c-divider);
+  overflow-x: clip;
 }
 
 @media (max-width: 640px) {

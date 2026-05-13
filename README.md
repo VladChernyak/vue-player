@@ -7,6 +7,8 @@ Feature-rich Vue 3 video player with HLS adaptive streaming, chapters, subtitles
 
 **[Documentation](https://vue-player.vercel.app)** · [Quick Start](https://vue-player.vercel.app/guide/quick-start) · [API Reference](https://vue-player.vercel.app/api/video-player)
 
+![Vue Player preview](.github/assets/preview.png)
+
 ---
 
 ## Features

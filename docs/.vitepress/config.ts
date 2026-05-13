@@ -18,7 +18,9 @@ export default defineConfig({
       alias: [
         {
           find: '@vue-player/vue/styles',
-          replacement: fileURLToPath(new URL('../../packages/vue/src/styles/index.css', import.meta.url)),
+          replacement: fileURLToPath(
+            new URL('../../packages/vue/src/styles/index.css', import.meta.url),
+          ),
         },
         {
           find: '@vue-player/vue',
@@ -58,7 +60,7 @@ export default defineConfig({
       { text: 'Guide', link: '/guide/introduction' },
       { text: 'API', link: '/api/video-player' },
       {
-        text: '0.1.0',
+        text: '0.1.3',
         items: [
           { text: 'Changelog', link: 'https://github.com/VladChernyak/vue-player/releases' },
           {

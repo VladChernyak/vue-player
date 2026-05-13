@@ -1,16 +1,60 @@
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vitepress'
+import { defineConfig, type HeadConfig } from 'vitepress'
 
 const SITE_URL = 'https://vue-player.vercel.app'
-const DESCRIPTION = 'Feature-rich Vue 3 video player with HLS, chapters, subtitles and more.'
+const DESCRIPTION =
+  'Feature-rich Vue 3 video player with HLS adaptive streaming, chapters, subtitles, thumbnail previews and Picture-in-Picture — out of the box.'
+
+const STRUCTURED_DATA = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Vue Player',
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Web',
+  description: DESCRIPTION,
+  url: SITE_URL,
+  downloadUrl: 'https://www.npmjs.com/package/@vue-player/vue',
+  softwareVersion: '0.1.3',
+  license: 'https://github.com/VladChernyak/vue-player/blob/main/LICENSE',
+  author: { '@type': 'Person', name: 'Vladyslav Chernyak' },
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+}
 
 export default defineConfig({
   title: 'Vue Player',
   description: DESCRIPTION,
   titleTemplate: ':title | Vue Player',
+  lang: 'en',
 
   sitemap: {
     hostname: SITE_URL,
+  },
+
+  transformHead({ pageData }) {
+    const head: HeadConfig[] = []
+
+    const isHome = pageData.relativePath === 'index.md'
+    const title = isHome
+      ? 'Vue Player — Vue 3 Video Player'
+      : pageData.title
+        ? `${pageData.title} | Vue Player`
+        : 'Vue Player'
+    const description = pageData.frontmatter.description || pageData.description || DESCRIPTION
+
+    const path = pageData.relativePath
+      .replace(/\.md$/, '')
+      .replace(/\/index$/, '/')
+      .replace(/^index$/, '')
+    const url = path ? `${SITE_URL}/${path}` : SITE_URL
+
+    head.push(['link', { rel: 'canonical', href: url }])
+    head.push(['meta', { property: 'og:url', content: url }])
+    head.push(['meta', { property: 'og:title', content: title }])
+    head.push(['meta', { property: 'og:description', content: description }])
+    head.push(['meta', { name: 'twitter:title', content: title }])
+    head.push(['meta', { name: 'twitter:description', content: description }])
+
+    return head
   },
 
   vite: {
@@ -37,19 +81,19 @@ export default defineConfig({
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
 
-    // Open Graph
+    // Open Graph (static — per-page values set in transformHead)
     ['meta', { property: 'og:type', content: 'website' }],
-    ['meta', { property: 'og:site_name', content: 'vue-player' }],
-    ['meta', { property: 'og:title', content: 'vue-player' }],
-    ['meta', { property: 'og:description', content: DESCRIPTION }],
+    ['meta', { property: 'og:site_name', content: 'Vue Player' }],
     ['meta', { property: 'og:image', content: `${SITE_URL}/og-image.png` }],
-    ['meta', { property: 'og:url', content: SITE_URL }],
+    ['meta', { property: 'og:image:width', content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
 
-    // Twitter / X
+    // Twitter / X (static)
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { name: 'twitter:title', content: 'vue-player' }],
-    ['meta', { name: 'twitter:description', content: DESCRIPTION }],
     ['meta', { name: 'twitter:image', content: `${SITE_URL}/og-image.png` }],
+
+    // Structured data
+    ['script', { type: 'application/ld+json' }, JSON.stringify(STRUCTURED_DATA)],
   ],
 
   themeConfig: {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { VideoPlayer } from '@vue-player/vue'
-import type { Chapter } from '@vue-player/core'
+import type { Chapter, Track } from '@vue-player/core'
 
 const src = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'
 const poster = '/demo-poster.webp'
@@ -13,6 +13,11 @@ const chapters: Chapter[] = [
   { time: 390, label: 'Retaliation' },
   { time: 492, label: "Buck's Revenge" },
 ]
+
+const tracks: Track[] = [
+  { src: '/demo-subtitles-en.vtt', label: 'English', language: 'en', default: true },
+  { src: '/demo-subtitles-de.vtt', label: 'Deutsch', language: 'de' },
+]
 </script>
 
 <template>
@@ -20,7 +25,7 @@ const chapters: Chapter[] = [
     <div class="home-demo-inner">
       <h2 class="home-demo-title">See it in action</h2>
       <p class="home-demo-sub">
-        HLS adaptive streaming, chapters, quality switching and Picture-in-Picture — all live.
+        HLS adaptive streaming, chapters, subtitles, quality switching and Picture-in-Picture — all live.
       </p>
       <div class="home-demo-player">
         <ClientOnly>
@@ -28,6 +33,7 @@ const chapters: Chapter[] = [
             :src="src"
             :poster="poster"
             :chapters="chapters"
+            :tracks="tracks"
             thumbnails="/demo-thumbs.vtt"
           />
           <template #fallback>

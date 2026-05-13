@@ -48,6 +48,22 @@ const chapters: Chapter[] = [
   border-top: 1px solid var(--vp-c-divider);
 }
 
+@media (max-width: 640px) {
+  .home-demo {
+    padding: 48px 8px;
+  }
+
+  .home-demo-inner {
+    max-width: 100%;
+  }
+
+  .home-demo-player {
+    box-shadow:
+      0 0 0 1px var(--vp-c-divider),
+      0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+}
+
 .home-demo-inner {
   max-width: 800px;
   margin: 0 auto;
@@ -84,7 +100,6 @@ const chapters: Chapter[] = [
   width: 100%;
   margin-top: 16px;
   border-radius: 16px;
-  overflow: hidden;
   box-shadow:
     0 0 0 1px var(--vp-c-divider),
     0 32px 80px rgba(0, 0, 0, 0.35);

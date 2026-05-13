@@ -7,7 +7,6 @@
   aspect-ratio: 16 / 9;
   background: var(--vp-bg);
   border-radius: var(--vp-radius);
-  overflow: hidden;
   font-family: var(--vp-font-family);
   font-size: var(--vp-font-size);
   font-weight: var(--vp-font-weight);
@@ -17,6 +16,15 @@
   outline: none;
   transition: box-shadow var(--vp-transition);
   container-type: inline-size;
+}
+
+/* Clips video + poster to border-radius without clipping menus/tooltips */
+.vp-video-area {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--vp-radius);
+  background: var(--vp-bg);
 }
 
 .vp-player:focus-visible {
@@ -74,6 +82,8 @@
   z-index: 2;
   padding: var(--vp-controls-padding);
   background: var(--vp-controls-bg);
+  border-bottom-left-radius: var(--vp-radius);
+  border-bottom-right-radius: var(--vp-radius);
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -178,9 +188,21 @@
   transform: translateX(-50%) translateY(0);
 }
 
+/* Last button in the controls row (fullscreen): right-align tooltip to avoid right-edge clipping */
+.vp-controls-row > .vp-button:last-child[aria-label]::after {
+  left: auto;
+  right: 0;
+  transform: translateY(4px);
+}
+
+.vp-controls-row > .vp-button:last-child[aria-label]:not(.vp-menu-open):hover::after {
+  transform: translateY(0);
+}
+
 .vp-speed-button {
   width: auto;
   min-width: var(--vp-button-size);
+  height: var(--vp-button-size);
   padding: 0 8px;
   font-size: var(--vp-font-size-sm);
   font-weight: 600;
@@ -517,6 +539,7 @@
   color: var(--vp-text-2);
   font-size: var(--vp-font-size);
   font-weight: var(--vp-font-weight);
+  white-space: nowrap;
   cursor: pointer;
   transition:
     background var(--vp-transition-fast),
@@ -1013,23 +1036,46 @@
     padding: 0 28px;
     gap: 2px;
   }
+
   .vp-volume-slider {
     display: none;
   }
 
   .vp-controls {
-    padding: 8px 12px 10px;
+    padding: 6px 12px 8px;
     gap: 1px;
   }
 
   .vp-controls-row {
+    height: 36px;
     gap: 4px;
   }
 
-  /* Constrain settings body so the menu fits within the player height */
-  .vp-settings-body {
-    max-height: 175px;
+  .vp-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Settings menu: position from right edge to avoid overflow, allow scrolling */
+  .vp-menu {
+    right: 0;
+    max-height: 60cqh;
     overflow-y: auto;
+  }
+
+  .vp-settings-body {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .vp-play-flash-circle {
+    width: 52px;
+    height: 52px;
+  }
+
+  .vp-play-flash-circle .vp-svg-icon {
+    width: 24px;
+    height: 24px;
   }
 }
 
@@ -1043,23 +1089,29 @@
   .vp-subtitles {
     padding: 0 16px;
   }
-  .vp-pip-button {
-    display: none;
-  }
 
   .vp-controls {
-    padding: 6px 10px 8px;
+    padding: 4px 8px 6px;
   }
 
   .vp-controls-row {
+    height: 32px;
     gap: 2px;
+  }
+
+  .vp-button {
+    width: 32px;
+    height: 32px;
   }
 
   .vp-time {
     font-size: 10px;
   }
+}
 
-  .vp-settings-body {
-    max-height: 110px;
+/* Touch devices: hide button tooltips (no hover on touch) */
+@media (hover: none) {
+  .vp-button[aria-label]::after {
+    display: none;
   }
 }

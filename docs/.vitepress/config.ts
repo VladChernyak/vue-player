@@ -80,6 +80,7 @@ export default defineConfig({
 
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
+    ['meta', { name: 'google-site-verification', content: 'dQBIUFfNk6Z9GDf9QHyquUv2daOJ_pZgBRZ9d57-8VE' }],
 
     // Open Graph (static — per-page values set in transformHead)
     ['meta', { property: 'og:type', content: 'website' }],

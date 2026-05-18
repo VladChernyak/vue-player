@@ -13,7 +13,7 @@ Feature-rich Vue 3 video player with HLS adaptive streaming, chapters, subtitles
 
 ## Features
 
-- **HLS adaptive streaming** — automatic quality switching via `hls.js`
+- **HLS adaptive streaming** — automatic quality switching via `hls.js`, loaded on demand
 - **Subtitles & captions** — WebVTT tracks with an in-player menu
 - **Chapter markers** — named timeline segments with tooltip labels
 - **Thumbnail previews** — sprite-sheet WebVTT scrubbing previews
@@ -26,8 +26,10 @@ Feature-rich Vue 3 video player with HLS adaptive streaming, chapters, subtitles
 
 ## Installation
 
+### Vue 3
+
 ```sh
-npm install @vue-player/vue hls.js
+npm install @vue-player/vue
 ```
 
 Import styles once in your app entry:
@@ -35,6 +37,27 @@ Import styles once in your app entry:
 ```ts
 import '@vue-player/vue/styles'
 ```
+
+For HLS streaming, install `hls.js` as well:
+
+```sh
+npm install hls.js
+```
+
+### Nuxt
+
+```sh
+npm install @vue-player/nuxt
+```
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['@vue-player/nuxt'],
+})
+```
+
+`VideoPlayer` and `usePlayer` are auto-imported everywhere — no manual imports needed. For HLS streaming, install `hls.js` as well.
 
 ## Quick Start
 
@@ -112,21 +135,6 @@ onMounted(() => loadSource('https://example.com/video.mp4'))
   <span>{{ state.currentTime.toFixed(1) }} / {{ state.duration.toFixed(1) }}</span>
 </template>
 ```
-
-## Nuxt
-
-```sh
-npm install @vue-player/nuxt
-```
-
-```ts
-// nuxt.config.ts
-export default defineNuxtConfig({
-  modules: ['@vue-player/nuxt'],
-})
-```
-
-`VideoPlayer` and `usePlayer` are auto-imported everywhere — no manual imports needed.
 
 ## Packages
 

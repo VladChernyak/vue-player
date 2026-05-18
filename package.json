@@ -8,6 +8,7 @@
     "docs:dev": "pnpm --filter @vue-player/docs dev",
     "docs:build": "pnpm --filter @vue-player/docs build",
     "docs:preview": "pnpm --filter @vue-player/docs preview",
+    "pretest": "pnpm build",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",

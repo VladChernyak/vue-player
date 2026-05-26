@@ -14,7 +14,7 @@ const STRUCTURED_DATA = {
   description: DESCRIPTION,
   url: SITE_URL,
   downloadUrl: 'https://www.npmjs.com/package/@vue-player/vue',
-  softwareVersion: '0.1.3',
+  softwareVersion: '0.1.4',
   license: 'https://github.com/VladChernyak/vue-player/blob/main/LICENSE',
   author: { '@type': 'Person', name: 'Vladyslav Chernyak' },
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
@@ -105,7 +105,7 @@ export default defineConfig({
       { text: 'Guide', link: '/guide/introduction' },
       { text: 'API', link: '/api/video-player' },
       {
-        text: '0.1.3',
+        text: '0.1.4',
         items: [
           { text: 'Changelog', link: 'https://github.com/VladChernyak/vue-player/releases' },
           {

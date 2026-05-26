@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4] — 2026-05-26
+
+### Changed
+
+- `@vue-player/nuxt`: migrated build tooling to `@nuxt/module-builder` (the official standard for Nuxt modules)
+- `@vue-player/nuxt`: dropped legacy CJS export — Nuxt v3+ uses ESM only
+- `@vue-player/nuxt`: types now use `.d.mts` extension per module-builder convention
+
+### Added
+
+- `@vue-player/nuxt`: integration and unit tests via `@nuxt/test-utils`
+- `@vue-player/nuxt`: playground app for local development (`pnpm dev` inside `packages/nuxt`)
+
 ## [0.1.3] — 2026-05-13
 
 ### Fixed

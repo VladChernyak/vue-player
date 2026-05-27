@@ -15,7 +15,7 @@ export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: '@vue-player/nuxt',
     configKey: 'vuePlayer',
-    compatibility: { nuxt: '>=3.0.0' },
+    compatibility: { nuxt: '>=4.0.0' },
   },
 
   defaults: {

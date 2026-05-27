@@ -21,9 +21,9 @@ describe('@vue-player/nuxt', () => {
       expect(meta.configKey).toBe('vuePlayer')
     })
 
-    it('requires nuxt >= 3.0.0', async () => {
+    it('requires nuxt >= 4.0.0', async () => {
       const meta = await VuePlayerModule.getMeta!()
-      expect(meta.compatibility?.nuxt).toBe('>=3.0.0')
+      expect(meta.compatibility?.nuxt).toBe('>=4.0.0')
     })
   })
 })

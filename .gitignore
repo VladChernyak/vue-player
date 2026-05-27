@@ -8,3 +8,4 @@ dist
 .cache
 docs/.vitepress/cache
 *.local
+nuxt-modules-issue.md

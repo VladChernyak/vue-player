@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `@vue-player/nuxt`: integration and unit tests via `@nuxt/test-utils`
 - `@vue-player/nuxt`: playground app for local development (`pnpm dev` inside `packages/nuxt`)
+- `@vue-player/nuxt`: Nuxt 4 support — upgraded `@nuxt/kit`, `@nuxt/test-utils`, and peer dependency to v4
 
 ## [0.1.3] — 2026-05-13
 

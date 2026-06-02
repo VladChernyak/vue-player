@@ -1042,8 +1042,8 @@
   .vp-subtitles {
     padding: 0 28px;
     gap: 2px;
-    /* controls bar at this size: 6px padding-top + 20px timeline + 1px gap + 36px row + 8px padding-bottom = 71px */
-    bottom: 74px;
+    /* controls bar ~71px tall; sit 2px inside transparent gradient top, matching desktop behaviour */
+    bottom: 69px;
   }
 
   .vp-volume-slider {
@@ -1097,6 +1097,8 @@
 
   .vp-subtitles {
     padding: 0 16px;
+    /* controls bar ~63px tall; sit 2px inside transparent gradient top */
+    bottom: 61px;
   }
 
   .vp-controls {

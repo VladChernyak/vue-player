@@ -13,6 +13,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   seek: [time: number]
+  seekstart: []
+  seekend: []
 }>()
 
 const trackRef = ref<HTMLElement | null>(null)
@@ -64,20 +66,27 @@ function ratioFromEvent(e: { clientX: number }): number {
   return Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
 }
 
-function stopSeeking() {
+function stopSeeking(emitEvent = false) {
+  if (!isSeeking.value) return
   isSeeking.value = false
   window.removeEventListener('pointermove', onPointerMove)
   window.removeEventListener('pointerup', onPointerUp)
-  window.removeEventListener('pointercancel', stopSeeking)
+  window.removeEventListener('pointercancel', onPointerCancel)
+  if (emitEvent) emit('seekend')
+}
+
+function onPointerCancel() {
+  stopSeeking(true)
 }
 
 function onPointerDown(e: PointerEvent) {
   if (!props.duration) return
   isSeeking.value = true
   seekRatio.value = ratioFromEvent(e)
+  emit('seekstart')
   window.addEventListener('pointermove', onPointerMove)
   window.addEventListener('pointerup', onPointerUp)
-  window.addEventListener('pointercancel', stopSeeking)
+  window.addEventListener('pointercancel', onPointerCancel)
 }
 
 function onPointerMove(e: PointerEvent) {
@@ -90,6 +99,7 @@ function onPointerUp(e: PointerEvent) {
   pendingSeekTime.value = time
   emit('seek', time)
   stopSeeking()
+  emit('seekend')
 }
 
 function onMouseMove(e: MouseEvent) {

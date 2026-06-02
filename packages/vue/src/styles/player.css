@@ -867,6 +867,13 @@
   align-items: center;
   justify-content: center;
   background: var(--vp-overlay-bg);
+  border-radius: var(--vp-radius);
+  overflow: hidden;
+}
+
+.vp-player:fullscreen .vp-overlay,
+.vp-player:-webkit-full-screen .vp-overlay {
+  border-radius: 0;
 }
 
 .vp-spinner {
@@ -1035,6 +1042,8 @@
   .vp-subtitles {
     padding: 0 28px;
     gap: 2px;
+    /* controls bar at this size: 6px padding-top + 20px timeline + 1px gap + 36px row + 8px padding-bottom = 71px */
+    bottom: 74px;
   }
 
   .vp-volume-slider {

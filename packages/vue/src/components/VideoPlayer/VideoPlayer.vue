@@ -168,14 +168,30 @@ watch(
 
 // ─── Controls visibility ───
 const controlsVisible = ref(true)
+const isSeeking = ref(false)
 let hideTimer: ReturnType<typeof setTimeout> | null = null
 
-function showControls() {
-  controlsVisible.value = true
+function scheduleHide() {
   if (hideTimer) clearTimeout(hideTimer)
   hideTimer = setTimeout(() => {
     if (state.isPlaying && !showPoster.value) controlsVisible.value = false
   }, 3000)
+}
+
+function showControls() {
+  controlsVisible.value = true
+  if (!isSeeking.value) scheduleHide()
+}
+
+function onSeekStart() {
+  isSeeking.value = true
+  controlsVisible.value = true
+  if (hideTimer) clearTimeout(hideTimer)
+}
+
+function onSeekEnd() {
+  isSeeking.value = false
+  scheduleHide()
 }
 
 function onMouseLeave() {
@@ -254,6 +270,8 @@ function onKeydown(e: KeyboardEvent) {
     @mousedown.capture="playerEl?.focus()"
     @mousemove="showControls"
     @mouseleave="onMouseLeave"
+    @touchstart.passive="showControls"
+    @touchmove.passive="showControls"
     @keydown="onKeydown"
   >
     <!-- Video area: clipped to border-radius, isolated from menu/tooltip overflow -->
@@ -325,6 +343,8 @@ function onKeydown(e: KeyboardEvent) {
         :chapters="chapters"
         :thumbnail-cues="thumbnailCues.length ? thumbnailCues : undefined"
         @seek="controls.seek"
+        @seekstart="onSeekStart"
+        @seekend="onSeekEnd"
       />
 
       <slot name="controls" :state="state" :player="controls">

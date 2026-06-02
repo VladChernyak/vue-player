@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.6] — 2026-06-02
+
+### Fixed
+
+- `@vue-player/vue`: controls panel no longer auto-hides while the user is scrubbing the timeline on touch devices — the hide timer is paused for the entire drag gesture and restarted only after `pointerup`/`pointercancel`
+- `@vue-player/vue`: added `touchstart` / `touchmove` handlers on the player root so any touch interaction resets the controls visibility timer on mobile
+- `@vue-player/vue`: loading/error overlay now clips to the player's border-radius instead of rendering with sharp corners
+- `@vue-player/vue`: subtitle position on small players (≤ 500 px) corrected — the bottom offset is now derived from the actual controls bar height at each breakpoint, so subtitles sit just above the visible gradient rather than floating in the middle of the video
+
 ## [0.1.5] — 2026-05-27
 
 ### Added

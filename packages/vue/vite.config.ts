@@ -20,7 +20,11 @@ export default defineConfig({
   plugins: [
     vue(),
     dts({
-      include: ['src'],
+      include: [
+        'src/**/*.ts',
+        'src/components/VideoPlayer/VideoPlayer.vue',
+        'src/components/controls/VpSettingsButton.vue',
+      ],
       outDir: 'dist',
       tsconfigPath: '../../tsconfig.json',
     }),

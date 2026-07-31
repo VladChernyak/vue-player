@@ -194,7 +194,8 @@ function onSeekEnd() {
   scheduleHide()
 }
 
-function onMouseLeave() {
+function onPointerLeave(event: PointerEvent) {
+  if (event.pointerType === 'touch') return
   if (state.isPlaying && !showPoster.value) controlsVisible.value = false
 }
 
@@ -212,7 +213,11 @@ function triggerFlash(icon: 'play' | 'pause') {
   }, 700)
 }
 
-function togglePlay() {
+function togglePlay(event?: PointerEvent) {
+  if (event && event.pointerType === 'touch' && !controlsVisible.value) {
+    return
+  }
+
   if (state.isPlaying) {
     controls.pause()
     triggerFlash('pause')
@@ -259,6 +264,13 @@ function onKeydown(e: KeyboardEvent) {
   }
   map[e.code]?.()
 }
+
+function onTouchStart(e: TouchEvent) {
+  if (!controlsVisible.value) {
+    e.preventDefault()
+  }
+  showControls()
+}
 </script>
 
 <template>
@@ -269,8 +281,8 @@ function onKeydown(e: KeyboardEvent) {
     tabindex="0"
     @mousedown.capture="playerEl?.focus()"
     @mousemove="showControls"
-    @mouseleave="onMouseLeave"
-    @touchstart.passive="showControls"
+    @pointerleave="onPointerLeave"
+    @touchstart="onTouchStart"
     @touchmove.passive="showControls"
     @keydown="onKeydown"
   >

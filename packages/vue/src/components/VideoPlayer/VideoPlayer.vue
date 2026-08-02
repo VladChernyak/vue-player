@@ -96,6 +96,7 @@ onMounted(() => {
   pipSupported.value = isPiPSupported()
   if (props.src) loadSource(props.src)
   videoRef.value?.addEventListener('timeupdate', syncSubtitles)
+  if (props.autoplay && props.muted) scheduleHide()
 })
 
 // Apply the active (or default) track once canplay fires — at that point all browser

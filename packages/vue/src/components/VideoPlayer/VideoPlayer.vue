@@ -213,11 +213,7 @@ function triggerFlash(icon: 'play' | 'pause') {
   }, 700)
 }
 
-function togglePlay(event?: PointerEvent) {
-  if (event && event.pointerType === 'touch' && !controlsVisible.value) {
-    return
-  }
-
+function togglePlay() {
   if (state.isPlaying) {
     controls.pause()
     triggerFlash('pause')

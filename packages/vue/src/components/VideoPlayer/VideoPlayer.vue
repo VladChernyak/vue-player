@@ -195,7 +195,8 @@ function onSeekEnd() {
   scheduleHide()
 }
 
-function onMouseLeave() {
+function onPointerLeave(event: PointerEvent) {
+  if (event.pointerType === 'touch') return
   if (state.isPlaying && !showPoster.value) controlsVisible.value = false
 }
 
@@ -260,6 +261,13 @@ function onKeydown(e: KeyboardEvent) {
   }
   map[e.code]?.()
 }
+
+function onTouchStart(e: TouchEvent) {
+  if (!controlsVisible.value) {
+    e.preventDefault()
+  }
+  showControls()
+}
 </script>
 
 <template>
@@ -270,8 +278,8 @@ function onKeydown(e: KeyboardEvent) {
     tabindex="0"
     @mousedown.capture="playerEl?.focus()"
     @mousemove="showControls"
-    @mouseleave="onMouseLeave"
-    @touchstart.passive="showControls"
+    @pointerleave="onPointerLeave"
+    @touchstart="onTouchStart"
     @touchmove.passive="showControls"
     @keydown="onKeydown"
   >

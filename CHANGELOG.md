@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.7] — 2026-10-29
+
+### Fixed
+
+- `@vue-player/vue`: exported type declarations are now built correctly
+- `@vue-player/vue`: improved touch handling of the controls on mobile devices
+- `@vue-player/vue`: controls auto-hide is now scheduled when the video starts with autoplay and muted
+
+### Changed
+
+- `@vue-player/nuxt`: package description, keywords and docs now say Nuxt 4 instead of Nuxt 3
+- `@vue-player/nuxt`: `homepage` now points to a working documentation URL
+
 ## [0.1.6] — 2026-06-02
 
 ### Fixed

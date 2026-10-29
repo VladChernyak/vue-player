@@ -25,7 +25,7 @@ description: Learn what vue-player is, its features, browser support and the ava
 |---|---|
 | `@vue-player/vue` | Vue 3 component and `usePlayer` composable |
 | `@vue-player/core` | Framework-agnostic core: adapters, types, utilities |
-| `@vue-player/nuxt` | Nuxt 3 module with auto-imports |
+| `@vue-player/nuxt` | Nuxt 4 module with auto-imports |
 
 ## Browser Support
 

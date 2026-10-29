@@ -142,7 +142,7 @@ onMounted(() => loadSource('https://example.com/video.mp4'))
 |---|---|
 | [`@vue-player/vue`](./packages/vue) | Vue 3 component and `usePlayer` composable |
 | [`@vue-player/core`](./packages/core) | Framework-agnostic player engine and types |
-| [`@vue-player/nuxt`](./packages/nuxt) | Nuxt 3 module with auto-imports |
+| [`@vue-player/nuxt`](./packages/nuxt) | Nuxt 4 module with auto-imports |
 
 ## Documentation
 

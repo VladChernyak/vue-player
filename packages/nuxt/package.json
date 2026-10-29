@@ -1,10 +1,9 @@
 {
   "name": "@vue-player/nuxt",
   "version": "0.1.6",
-  "description": "Official Nuxt 3 module for vue-player — auto-imports VideoPlayer and usePlayer",
+  "description": "Official Nuxt 4 module for vue-player — auto-imports VideoPlayer and usePlayer",
   "keywords": [
     "nuxt",
-    "nuxt3",
     "nuxt-module",
     "vue",
     "vue3",

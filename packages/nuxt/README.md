@@ -1,6 +1,6 @@
 # @vue-player/nuxt
 
-Official Nuxt 3 module for [vue-player](https://vue-player.vercel.app) — auto-imports `VideoPlayer` and `usePlayer` across your entire app with zero config.
+Official Nuxt 4 module for [vue-player](https://vue-player.vercel.app) — auto-imports `VideoPlayer` and `usePlayer` across your entire app with zero config.
 
 [![npm](https://img.shields.io/npm/v/@vue-player/nuxt?color=3dd68c&label=npm)](https://www.npmjs.com/package/@vue-player/nuxt)
 [![license](https://img.shields.io/github/license/VladChernyak/vue-player?color=3dd68c)](https://github.com/VladChernyak/vue-player/blob/main/LICENSE)

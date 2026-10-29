@@ -10,7 +10,7 @@ This is a pnpm monorepo with the following packages:
 packages/
   core/    — framework-agnostic player engine and types
   vue/     — Vue 3 component and usePlayer composable
-  nuxt/    — Nuxt 3 module with auto-imports
+  nuxt/    — Nuxt 4 module with auto-imports
 docs/      — VitePress documentation site
 playground/ — local development sandbox
 ```

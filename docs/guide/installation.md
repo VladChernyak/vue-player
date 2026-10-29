@@ -53,7 +53,7 @@ npm install hls.js
 
 ## Nuxt
 
-For Nuxt 3 projects, use the dedicated module instead:
+For Nuxt 4 projects, use the dedicated module instead:
 
 ```sh
 npm install @vue-player/nuxt
